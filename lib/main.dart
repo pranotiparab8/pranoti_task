@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'Pages/CountdownTimer.dart';
+import 'Pages/Chat_app.dart';
 
 void main() => runApp(const MyApp());
 
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CountdownTimer(),
+      home: Chat_app(),
     );
   }
 }
