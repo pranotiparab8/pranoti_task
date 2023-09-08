@@ -316,7 +316,7 @@ class _Chat_app1State extends State<Chat_app1> {
                                       ),
                                     ],
                                   ),
-                                  Text(path1!),
+                                  Text(jsondata1[index]["message"]!),
                                 ],
                               ),
                             ),
