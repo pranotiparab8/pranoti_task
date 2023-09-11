@@ -8,14 +8,14 @@ import 'package:intl/intl.dart' as intl;
 import 'package:lecle_flutter_link_preview/lecle_flutter_link_preview.dart';
 import 'package:video_player/video_player.dart';
 
-class Chat_app1 extends StatefulWidget {
-  const Chat_app1({Key? key}) : super(key: key);
+class Chat_app4 extends StatefulWidget {
+  const Chat_app4({Key? key}) : super(key: key);
 
   @override
-  State<Chat_app1> createState() => _Chat_app1State();
+  State<Chat_app4> createState() => _Chat_app4State();
 }
 
-class _Chat_app1State extends State<Chat_app1> {
+class _Chat_app4State extends State<Chat_app4> {
   final ScrollController _scrollController = ScrollController();
   PickedFile? pickedFile;
   PickedFile? pickedVideo;
@@ -35,90 +35,107 @@ class _Chat_app1State extends State<Chat_app1> {
       "message":
           "Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello ",
       "messageType": "Text",
-      "date": "12:12PM"
+      "date": "12:12PM",
+      "preMsg": "",
     },
     {
       "sender": "user2",
       "message":
           "how r u? how r u? how r u? how r u? how r u? how r u? how r u? how r u? how r u? how r u? how r u? ",
       "messageType": "Text",
-      "date": "12:12PM"
+      "date": "12:12PM",
+      "preMsg": "",
     },
     {
       "sender": "user1",
       "message": "Hi",
       "messageType": "Text",
-      "date": "12:12PM"
+      "date": "12:12PM",
+      "preMsg": "",
     },
     {
       "sender": "user2",
       "message": "https://youtu.be/RLzC55ai0eo?si=VFDXG330V1wejWaf",
       "messageType": "Text",
-      "date": "12:12PM"
+      "date": "12:12PM",
+      "preMsg": "",
     },
     {
       "sender": "user2",
       "message": "Ok",
       "messageType": "Text",
-      "date": "12:12PM"
+      "date": "12:12PM",
+      "preMsg": "",
     },
     {
       "sender": "user1",
       "message": "Hello",
       "messageType": "Text",
-      "date": "12:12PM"
+      "date": "12:12PM",
+      "preMsg": "",
     },
     {
       "sender": "user2",
       "message": "how r u?",
       "messageType": "Text",
-      "date": "12:12PM"
+      "date": "12:12PM",
+      "preMsg": "",
     },
     {
       "sender": "user1",
       "message": "Hi",
       "messageType": "Text",
-      "date": "12:12PM"
+      "date": "12:12PM",
+      "preMsg": "",
     },
     {
       "sender": "user2",
       "message": "m fine.",
       "messageType": "Text",
-      "date": "12:12PM"
+      "date": "12:12PM",
+      "preMsg": "",
     },
     {
       "sender": "user2",
       "message": "Ok",
       "messageType": "Text",
-      "date": "12:12PM"
+      "date": "12:12PM",
+      "preMsg": "",
     },
     {
       "sender": "user2",
       "message": "m fine.",
       "messageType": "Text",
-      "date": "12:12PM"
+      "date": "12:12PM",
+      "preMsg": "",
     },
     {
       "sender": "user2",
       "message": "Ok",
       "messageType": "Text",
-      "date": "12:12PM"
+      "date": "12:12PM",
+      "preMsg": "",
     },
     {
       "sender": "user2",
       "message": "m fine.",
       "messageType": "Text",
-      "date": "12:12PM"
+      "date": "12:12PM",
+      "preMsg": "",
     },
     {
       "sender": "user2",
       "message": "Ok",
       "messageType": "Text",
-      "date": "12:12PM"
+      "date": "12:12PM",
+      "preMsg": "",
     },
   ];
   TextEditingController textController1 = TextEditingController();
+  TextEditingController messageController = TextEditingController();
   DateTime now = DateTime.now();
+  bool a = false;
+
   @override
   void initState() {
     super.initState();
@@ -159,7 +176,13 @@ class _Chat_app1State extends State<Chat_app1> {
               itemBuilder: (context, index) {
                 return jsondata1[index]["messageType"] == "Text"
                     ? InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          setState(() {
+                            a = true;
+                            messageController.text =
+                                jsondata1[index]["message"]!;
+                          });
+                        },
                         child: Align(
                           alignment: jsondata1[index]["sender"] == "user1"
                               ? Alignment.centerRight
@@ -179,7 +202,15 @@ class _Chat_app1State extends State<Chat_app1> {
                               color: Colors.lightBlueAccent,
                             ),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                // if (jsondata1[index]["date"]! ==
+                                //     intl.DateFormat.jm().format(DateTime.now()))
+                                if (jsondata1[index]["preMsg"] != '' &&
+                                    jsondata1[index]["preMsg"] != null)
+                                  Card(
+                                      color: Colors.lightBlue,
+                                      child: Text(jsondata1[index]["preMsg"]!)),
                                 _buildCustomLinkPreview(
                                     context, jsondata1[index]["message"]!),
                                 Row(
@@ -202,122 +233,161 @@ class _Chat_app1State extends State<Chat_app1> {
                         ),
                       )
                     : jsondata1[index]["messageType"] == "Video"
-                        ? Align(
-                            alignment: jsondata1[index]["sender"] == "user1"
-                                ? Alignment.centerRight
-                                : Alignment.centerLeft,
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              margin: jsondata1[index]["sender"] == "user1"
-                                  ? EdgeInsets.only(left: 100, right: 8, top: 8)
-                                  : EdgeInsets.only(
-                                      right: 100, left: 8, top: 8),
-                              decoration: BoxDecoration(
-                                borderRadius: jsondata1[index]["sender"] ==
-                                        "user1"
-                                    ? BorderRadius.circular(8).copyWith(
-                                        bottomRight: const Radius.circular(0))
-                                    : BorderRadius.circular(8).copyWith(
-                                        bottomLeft: const Radius.circular(0)),
-                                color: Colors.lightBlueAccent,
-                              ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Expanded(
-                                        child: Container(
-                                          height: 150,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                jsondata1[index]["message"]!,
+                        ? InkWell(
+                            onTap: () {
+                              setState(() {
+                                a = true;
+                                messageController.text =
+                                    jsondata1[index]["message"]!;
+                              });
+                            },
+                            child: Align(
+                              alignment: jsondata1[index]["sender"] == "user1"
+                                  ? Alignment.centerRight
+                                  : Alignment.centerLeft,
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                margin: jsondata1[index]["sender"] == "user1"
+                                    ? EdgeInsets.only(
+                                        left: 100, right: 8, top: 8)
+                                    : EdgeInsets.only(
+                                        right: 100, left: 8, top: 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: jsondata1[index]["sender"] ==
+                                          "user1"
+                                      ? BorderRadius.circular(8).copyWith(
+                                          bottomRight: const Radius.circular(0))
+                                      : BorderRadius.circular(8).copyWith(
+                                          bottomLeft: const Radius.circular(0)),
+                                  color: Colors.lightBlueAccent,
+                                ),
+                                child: Column(
+                                  children: [
+                                    if (jsondata1[index]["preMsg"] != '' &&
+                                        jsondata1[index]["preMsg"] != null)
+                                      Card(
+                                          color: Colors.lightBlue,
+                                          child: Text(
+                                              jsondata1[index]["preMsg"]!)),
+                                    _buildCustomLinkPreview(
+                                        context, jsondata1[index]["message"]!),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            height: 150,
+                                            width: 100,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(
+                                                  jsondata1[index]["message"]!,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          child: AspectRatio(
-                                            aspectRatio: 3 / 4,
-                                            child: FlickVideoPlayer(
-                                              flickManager: FlickManager(
-                                                videoPlayerController:
-                                                    VideoPlayerController
-                                                        .network(
-                                                            jsondata1[index]
-                                                                ["message"]!),
+                                            child: AspectRatio(
+                                              aspectRatio: 3 / 4,
+                                              child: FlickVideoPlayer(
+                                                flickManager: FlickManager(
+                                                  videoPlayerController:
+                                                      VideoPlayerController
+                                                          .network(
+                                                              jsondata1[index]
+                                                                  ["message"]!),
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Text(
-                                        jsondata1[index]["date"]!,
-                                        style: const TextStyle(fontSize: 12),
-                                        textAlign: TextAlign.end,
-                                      ),
-                                    ],
-                                  ),
-                                  Text(path2!),
-                                ],
+                                        Text(
+                                          jsondata1[index]["date"]!,
+                                          style: const TextStyle(fontSize: 12),
+                                          textAlign: TextAlign.end,
+                                        ),
+                                      ],
+                                    ),
+                                    Text(path2!),
+                                  ],
+                                ),
                               ),
                             ),
                           )
-                        : Align(
-                            alignment: jsondata1[index]["sender"] == "user1"
-                                ? Alignment.centerRight
-                                : Alignment.centerLeft,
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              margin: jsondata1[index]["sender"] == "user1"
-                                  ? EdgeInsets.only(left: 100, right: 8, top: 8)
-                                  : EdgeInsets.only(
-                                      right: 100, left: 8, top: 8),
-                              decoration: BoxDecoration(
-                                borderRadius: jsondata1[index]["sender"] ==
-                                        "user1"
-                                    ? BorderRadius.circular(8).copyWith(
-                                        bottomRight: const Radius.circular(0))
-                                    : BorderRadius.circular(8).copyWith(
-                                        bottomLeft: const Radius.circular(0)),
-                                color: Colors.lightBlueAccent,
-                              ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Expanded(
-                                        child: Container(
-                                          height: 100,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                jsondata1[index]["message"]!,
+                        : InkWell(
+                            onTap: () {
+                              setState(() {
+                                a = true;
+                                messageController.text =
+                                    jsondata1[index]["message"]!;
+                              });
+                            },
+                            child: Align(
+                              alignment: jsondata1[index]["sender"] == "user1"
+                                  ? Alignment.centerRight
+                                  : Alignment.centerLeft,
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                margin: jsondata1[index]["sender"] == "user1"
+                                    ? const EdgeInsets.only(
+                                        left: 100, right: 8, top: 8)
+                                    : const EdgeInsets.only(
+                                        right: 100, left: 8, top: 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: jsondata1[index]["sender"] ==
+                                          "user1"
+                                      ? BorderRadius.circular(8).copyWith(
+                                          bottomRight: const Radius.circular(0))
+                                      : BorderRadius.circular(8).copyWith(
+                                          bottomLeft: const Radius.circular(0)),
+                                  color: Colors.lightBlueAccent,
+                                ),
+                                child: Column(
+                                  children: [
+                                    if (jsondata1[index]["preMsg"] != '' &&
+                                        jsondata1[index]["preMsg"] != null)
+                                      Card(
+                                          color: Colors.lightBlue,
+                                          child: Text(
+                                              jsondata1[index]["preMsg"]!)),
+                                    _buildCustomLinkPreview(
+                                        context, jsondata1[index]["message"]!),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            height: 100,
+                                            width: 100,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(
+                                                  jsondata1[index]["message"]!,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          child: Image.file(
-                                            File(jsondata1[index]["message"]!),
-                                            width: 80,
-                                            height: 80,
+                                            child: Image.file(
+                                              File(
+                                                  jsondata1[index]["message"]!),
+                                              width: 80,
+                                              height: 80,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Text(
-                                        jsondata1[index]["date"]!,
-                                        style: const TextStyle(fontSize: 12),
-                                        textAlign: TextAlign.end,
-                                      ),
-                                    ],
-                                  ),
-                                  Text(jsondata1[index]["message"]!),
-                                ],
+                                        Text(
+                                          jsondata1[index]["date"]!,
+                                          style: const TextStyle(fontSize: 12),
+                                          textAlign: TextAlign.end,
+                                        ),
+                                      ],
+                                    ),
+                                    //Text(path1!),
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -332,6 +402,8 @@ class _Chat_app1State extends State<Chat_app1> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                if (a == true || messageController.text != '')
+                  Text(messageController.text),
                 pickedVideo != null
                     ? Container(
                         height: 100,
@@ -344,6 +416,8 @@ class _Chat_app1State extends State<Chat_app1> {
                       )
                     : pickedFile != null
                         ? Image.file(File(pickedFile!.path))
+                        // : (a == true || messageController.text != '')
+                        //     ? Text(messageController.text)
                         : Flexible(
                             child: SingleChildScrollView(
                               child: _buildCustomLinkPreview(
@@ -367,19 +441,20 @@ class _Chat_app1State extends State<Chat_app1> {
                       onPressed: () {
                         setState(() {
                           if (pickedVideo != null) {
-                            _getTextFromUser(
-                                "user1", pickedVideo!.path, "Video");
+                            _getTextFromUser("user1", pickedVideo!.path,
+                                "Video", messageController.text);
                           } else if (pickedFile != null) {
-                            _getTextFromUser(
-                                "user1", pickedFile!.path, "image");
+                            _getTextFromUser("user1", pickedFile!.path, "image",
+                                messageController.text);
                           } else {
-                            _getTextFromUser(
-                                "user1", textController1.text, "Text");
+                            _getTextFromUser("user1", textController1.text,
+                                "Text", messageController.text);
 
                             FocusScope.of(context).unfocus();
                           }
                           _scrollToBottom();
                         });
+                        messageController.text = '';
                         pickedVideo = null;
                         pickedFile = null;
                       },
@@ -388,21 +463,21 @@ class _Chat_app1State extends State<Chat_app1> {
                       icon: const Icon(Icons.looks_two_outlined,
                           color: Colors.blueAccent),
                       onPressed: () {
-                        print(textController1.toString());
                         setState(() {
                           if (pickedVideo != null) {
-                            _getTextFromUser(
-                                "user2", pickedVideo!.path, "Video");
+                            _getTextFromUser("user2", pickedVideo!.path,
+                                "Video", messageController.text);
                           } else if (pickedFile != null) {
-                            _getTextFromUser(
-                                "user2", pickedFile!.path, "image");
+                            _getTextFromUser("user2", pickedFile!.path, "image",
+                                messageController.text);
                           } else {
-                            _getTextFromUser(
-                                "user2", textController1.text, "Text");
+                            _getTextFromUser("user2", textController1.text,
+                                "Text", messageController.text);
                             FocusScope.of(context).unfocus();
                           }
                           _scrollToBottom();
                         });
+                        messageController.text = '';
                         pickedVideo = null;
                         pickedFile = null;
                       },
@@ -460,13 +535,14 @@ class _Chat_app1State extends State<Chat_app1> {
     }
   }
 
-  _getTextFromUser(sender, msg, type) {
+  _getTextFromUser(sender, msg, type, preMsg) {
     setState(() {
       jsondata1.add({
         "sender": sender,
         "message": msg,
         "messageType": type,
         "date": intl.DateFormat.jm().format(DateTime.now()),
+        "preMsg": preMsg,
       });
       textController1.clear();
     });
