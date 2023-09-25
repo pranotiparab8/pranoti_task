@@ -8,14 +8,14 @@ import 'package:intl/intl.dart' as intl;
 import 'package:lecle_flutter_link_preview/lecle_flutter_link_preview.dart';
 import 'package:video_player/video_player.dart';
 
-class Chat_app0 extends StatefulWidget {
-  const Chat_app0({Key? key}) : super(key: key);
+class Chat_app10 extends StatefulWidget {
+  const Chat_app10({Key? key}) : super(key: key);
 
   @override
-  State<Chat_app0> createState() => _Chat_app0State();
+  State<Chat_app10> createState() => _Chat_app10State();
 }
 
-class _Chat_app0State extends State<Chat_app0> {
+class _Chat_app10State extends State<Chat_app10> {
   final ScrollController _scrollController = ScrollController();
   PickedFile? pickedFile;
   PickedFile? pickedVideo;
@@ -148,10 +148,9 @@ class _Chat_app0State extends State<Chat_app0> {
   TextEditingController textController1 = TextEditingController();
   String messageController = "";
   String prevMsgType = "Text1";
-  //TextEditingController messageController = TextEditingController();
   DateTime now = DateTime.now();
-  //bool a = false;
-
+  // RxBool isImagePicked = false.obs;
+  // RxBool isVideoPicked = false.obs;
   @override
   void initState() {
     super.initState();
@@ -169,7 +168,6 @@ class _Chat_app0State extends State<Chat_app0> {
 
   @override
   Widget build(BuildContext context) {
-    //print(messageController.text);
     return Scaffold(
       appBar: AppBar(
         title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -195,10 +193,8 @@ class _Chat_app0State extends State<Chat_app0> {
                     ? InkWell(
                         onTap: () {
                           setState(() {
-                            //a = true;
                             messageController = jsondata1[index]["message"]!;
                             prevMsgType = "Text1";
-                            // jsondata1[index]["prevMsgType"] = "Text1";
                           });
                         },
                         child: Align(
@@ -206,7 +202,8 @@ class _Chat_app0State extends State<Chat_app0> {
                               ? Alignment.centerRight
                               : Alignment.centerLeft,
                           child: Container(
-                            padding: const EdgeInsets.all(8),
+                            padding:
+                                const EdgeInsets.all(4).copyWith(bottom: 8),
                             margin: jsondata1[index]["sender"] == "user1"
                                 ? EdgeInsets.only(left: 100, right: 8, top: 8)
                                 : EdgeInsets.only(right: 100, left: 8, top: 8),
@@ -220,50 +217,35 @@ class _Chat_app0State extends State<Chat_app0> {
                               color: Colors.lightBlueAccent,
                             ),
                             child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Card(
-                                //   color: Colors.lightBlue,
-                                // if (jsondata1[index]["preMsg"] != "" &&
-                                //         prevMsgType == "Text1" &&
-                                //         jsondata1[index]["preMsg"] != null &&
-                                //         // jsondata1[index]["preMsgType"] ==
-                                //         //     "Text1" &&
-                                //         jsondata1[index]["preMsgType"] != '' ||
-                                //     jsondata1[index]["preMsgType"] != null)
-                                //   Text(jsondata1[index]["preMsg"]!)
-                                // else if (jsondata1[index]["preMsg"] != '' &&
-                                //         jsondata1[index]["preMsg"] != null &&
-                                //         jsondata1[index]["preMsgType"] ==
-                                //             "Video1" ||
-                                //     prevMsgType == "Video1" &&
-                                //         messageController == '*.mp4')
-                                //   Flexible(
-                                //     child: Container(
-                                //       child: FlickVideoPlayer(
-                                //         flickManager: FlickManager(
-                                //           videoPlayerController:
-                                //               VideoPlayerController.network(
-                                //                   jsondata1[index]["preMsg"]!),
-                                //         ),
-                                //       ),
-                                //     ),
-                                //   )
-                                // else if (jsondata1[index]["preMsg"] != '' &&
-                                //     jsondata1[index]["preMsg"] != null &&
-                                //     jsondata1[index]["preMsgType"] ==
-                                //         "Image1" &&
-                                //     prevMsgType == "Image1" &&
-                                //     messageController == '*.jpg')
-                                //   Image.file(
-                                //     File(jsondata1[index]["preMsg"]!),
-                                //     width: 80,
-                                //     height: 80,
-                                //   )
-                                // else
-                                //   Container(height: 0),
-                                if (jsondata1[index]["prevMsgType"] == "Text1")
-                                  Text(jsondata1[index]["preMsg"]!)
+                                if (jsondata1[index]["prevMsgType"] ==
+                                        "Text1" &&
+                                    jsondata1[index]["preMsg"] != null &&
+                                    jsondata1[index]["preMsg"] != '')
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(2.0),
+                                    child: Container(
+                                        //width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          color: Colors.blue,
+                                          border: Border(
+                                              left: BorderSide(
+                                            color: Colors.yellow,
+                                            width: 4.0,
+                                          )),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            const SizedBox(width: 9.0),
+                                            Flexible(
+                                              child: Text(
+                                                  jsondata1[index]["preMsg"]!),
+                                            ),
+                                          ],
+                                        )),
+                                  )
                                 else if (jsondata1[index]["prevMsgType"] ==
                                     "Video1")
                                   Container(
@@ -277,29 +259,69 @@ class _Chat_app0State extends State<Chat_app0> {
                                   )
                                 else if (jsondata1[index]["prevMsgType"] ==
                                     "Image1")
-                                  Image.file(
-                                    File(jsondata1[index]["preMsg"]!),
-                                    width: 80,
-                                    height: 80,
+                                  // ClipRRect(
+                                  //   borderRadius: BorderRadius.circular(2.0),
+                                  //   child: Container(
+                                  //       decoration: BoxDecoration(
+                                  //         color: Colors.blue,
+                                  //         border: Border(
+                                  //             left: BorderSide(
+                                  //           color: Colors.yellow,
+                                  //           width: 4.0,
+                                  //         )),
+                                  //       ),
+                                  //       child: Row(
+                                  //         mainAxisSize: MainAxisSize.min,
+                                  //         children: [
+                                  // Column(
+                                  //   crossAxisAlignment:
+                                  //       CrossAxisAlignment.start,
+                                  //   mainAxisSize: MainAxisSize.min,
+                                  //   children: [
+                                  //     Text("You"),
+                                  //     Row(
+                                  //       children: [
+                                  //         Icon(Icons.photo),
+                                  //         Text("Photo")
+                                  //       ],
+                                  //     )
+                                  //   ],
+                                  // ),
+                                  Flexible(
+                                    child: Image.file(
+                                      File(jsondata1[index]["preMsg"]!),
+                                      width: 50,
+                                      height: 50,
+                                    ),
                                   )
+                                //   ],
+                                // )),
+                                // )
                                 else
                                   Container(width: 0),
                                 _buildCustomLinkPreview(
                                     context, jsondata1[index]["message"]!),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Flexible(
-                                        child:
-                                            Text(jsondata1[index]["message"]!)),
-                                    Text(
-                                      jsondata1[index]["date"]!,
-                                      style: const TextStyle(fontSize: 12),
-                                      textAlign: TextAlign.right,
-                                    )
-                                  ],
-                                ),
+                                if (jsondata1[index]["message"] != null &&
+                                        jsondata1[index]["message"] != '' &&
+                                        jsondata1[index]["preMsg"] != null ||
+                                    jsondata1[index]["preMsg"] != '')
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Flexible(
+                                          child: Text(
+                                              jsondata1[index]["message"]!)),
+                                      Transform.translate(
+                                        offset: Offset(0, 6.0),
+                                        child: Text(
+                                          jsondata1[index]["date"]!,
+                                          style: const TextStyle(fontSize: 12),
+                                          textAlign: TextAlign.right,
+                                        ),
+                                      )
+                                    ],
+                                  ),
                               ],
                             ),
                           ),
@@ -309,11 +331,9 @@ class _Chat_app0State extends State<Chat_app0> {
                         ? InkWell(
                             onTap: () {
                               setState(() {
-                                //a = true;
                                 messageController =
                                     jsondata1[index]["message"]!;
                                 prevMsgType = "Video1";
-                                // jsondata1[index]["prevMsgType"] = "Video1";
                               });
                             },
                             child: Align(
@@ -321,7 +341,7 @@ class _Chat_app0State extends State<Chat_app0> {
                                   ? Alignment.centerRight
                                   : Alignment.centerLeft,
                               child: Container(
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(4),
                                 margin: jsondata1[index]["sender"] == "user1"
                                     ? EdgeInsets.only(
                                         left: 100, right: 8, top: 8)
@@ -346,7 +366,33 @@ class _Chat_app0State extends State<Chat_app0> {
                                         child: jsondata1[index]
                                                     ["prevMsgType"] ==
                                                 "Text1"
-                                            ? Text(jsondata1[index]["preMsg"]!)
+                                            ? ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(2.0),
+                                                child: Container(
+                                                    width: double.infinity,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.blue,
+                                                      border: Border(
+                                                          left: BorderSide(
+                                                        color: Colors.yellow,
+                                                        width: 4.0,
+                                                      )),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        const SizedBox(
+                                                            width: 9.0),
+                                                        Flexible(
+                                                          child: Text(
+                                                              jsondata1[index]
+                                                                  ["preMsg"]!),
+                                                        ),
+                                                      ],
+                                                    )),
+                                              )
                                             : jsondata1[index]["prevMsgType"] ==
                                                     "Video1"
                                                 ? Flexible(
@@ -378,30 +424,25 @@ class _Chat_app0State extends State<Chat_app0> {
                                           CrossAxisAlignment.end,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Flexible(
-                                          child: Container(
-                                            // height: 150,
-                                            // width: 100,
-                                            // decoration: BoxDecoration(
-                                            //   image: DecorationImage(
-                                            //     fit: BoxFit.cover,
-                                            //     image: NetworkImage(
-                                            //       jsondata1[index]["message"]!,
-                                            //     ),
-                                            //   ),
-                                            // ),
-                                            // child: AspectRatio(
-                                            //   aspectRatio: 3 / 4,
-                                            child: FlickVideoPlayer(
-                                              flickManager: FlickManager(
-                                                videoPlayerController:
-                                                    VideoPlayerController
-                                                        .network(
-                                                            jsondata1[index]
-                                                                ["message"]!),
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Flexible(
+                                                child: Container(
+                                                  child: FlickVideoPlayer(
+                                                    flickManager: FlickManager(
+                                                      videoPlayerController:
+                                                          VideoPlayerController
+                                                              .network(jsondata1[
+                                                                      index]
+                                                                  ["message"]!),
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                            // ),
+                                              Text(jsondata1[index]["text"]),
+                                            ],
                                           ),
                                         ),
                                         Text(
@@ -411,7 +452,45 @@ class _Chat_app0State extends State<Chat_app0> {
                                         ),
                                       ],
                                     ),
-                                    Text(path2!),
+                                    // Row(
+                                    //   crossAxisAlignment:
+                                    //       CrossAxisAlignment.end,
+                                    //   mainAxisSize: MainAxisSize.min,
+                                    //   children: [
+                                    //     Flexible(
+                                    //       child: Container(
+                                    //         // height: 150,
+                                    //         // width: 100,
+                                    //         // decoration: BoxDecoration(
+                                    //         //   image: DecorationImage(
+                                    //         //     fit: BoxFit.cover,
+                                    //         //     image: NetworkImage(
+                                    //         //       jsondata1[index]["message"]!,
+                                    //         //     ),
+                                    //         //   ),
+                                    //         // ),
+                                    //         // child: AspectRatio(
+                                    //         //   aspectRatio: 3 / 4,
+                                    //         child: FlickVideoPlayer(
+                                    //           flickManager: FlickManager(
+                                    //             videoPlayerController:
+                                    //                 VideoPlayerController
+                                    //                     .network(
+                                    //                         jsondata1[index]
+                                    //                             ["message"]!),
+                                    //           ),
+                                    //         ),
+                                    //         // ),
+                                    //       ),
+                                    //     ),
+                                    //     Text(
+                                    //       jsondata1[index]["date"]!,
+                                    //       style: const TextStyle(fontSize: 12),
+                                    //       textAlign: TextAlign.end,
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    //Text(jsondata1[index]["text"]),
                                   ],
                                 ),
                               ),
@@ -420,11 +499,9 @@ class _Chat_app0State extends State<Chat_app0> {
                         : InkWell(
                             onTap: () {
                               setState(() {
-                                //a = true;
                                 messageController =
                                     jsondata1[index]["message"]!;
                                 prevMsgType = "Image1";
-                                // jsondata1[index]["prevMsgType"] = "Image1";
                               });
                             },
                             child: Align(
@@ -432,7 +509,7 @@ class _Chat_app0State extends State<Chat_app0> {
                                   ? Alignment.centerRight
                                   : Alignment.centerLeft,
                               child: Container(
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(4),
                                 margin: jsondata1[index]["sender"] == "user1"
                                     ? const EdgeInsets.only(
                                         left: 100, right: 8, top: 8)
@@ -448,43 +525,34 @@ class _Chat_app0State extends State<Chat_app0> {
                                   color: Colors.lightBlueAccent,
                                 ),
                                 child: Column(
+                                  //mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    // if (jsondata1[index]["preMsg"] != '' &&
-                                    //     jsondata1[index]["preMsg"] != null)
-                                    //   Card(
-                                    //     color: Colors.lightBlue,
-                                    //     child: jsondata1[index]
-                                    //                 ["prevMsgType"] ==
-                                    //             "Text1"
-                                    //         ? Text(jsondata1[index]["preMsg"]!)
-                                    //         : jsondata1[index]["prevMsgType"] ==
-                                    //                 "Video1"
-                                    //             ? Flexible(
-                                    //                 child: Container(
-                                    //                   child: FlickVideoPlayer(
-                                    //                     flickManager:
-                                    //                         FlickManager(
-                                    //                       videoPlayerController:
-                                    //                           VideoPlayerController
-                                    //                               .network(jsondata1[
-                                    //                                       index]
-                                    //                                   [
-                                    //                                   "preMsg"]!),
-                                    //                     ),
-                                    //                   ),
-                                    //                 ),
-                                    //               )
-                                    //             : Image.file(
-                                    //                 File(jsondata1[index]
-                                    //                     ["preMsg"]!),
-                                    //                 width: 80,
-                                    //                 height: 80,
-                                    //               ),
-                                    //   ),
                                     if (jsondata1[index]["prevMsgType"] ==
                                         "Text1")
-                                      Text(jsondata1[index]["preMsg"]!)
+                                      ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(2.0),
+                                        child: Container(
+                                            //width: double.infinity,
+                                            decoration: BoxDecoration(
+                                              color: Colors.blue,
+                                              border: Border(
+                                                  left: BorderSide(
+                                                color: Colors.yellow,
+                                                width: 4.0,
+                                              )),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                const SizedBox(width: 9.0),
+                                                Flexible(
+                                                  child: Text(jsondata1[index]
+                                                      ["preMsg"]!),
+                                                ),
+                                              ],
+                                            )),
+                                      )
                                     else if (jsondata1[index]["prevMsgType"] ==
                                         "Video1")
                                       Container(
@@ -508,30 +576,31 @@ class _Chat_app0State extends State<Chat_app0> {
                                       Container(width: 0),
                                     _buildCustomLinkPreview(
                                         context, jsondata1[index]["message"]!),
+                                    const SizedBox(height: 2),
                                     Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
-                                      mainAxisSize: MainAxisSize.min,
+                                      //mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Expanded(
-                                          child: Container(
-                                            height: 100,
-                                            width: 100,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Container(
+                                              width: 200,
+                                              height: 300,
+                                              child: Image.file(
+                                                File(jsondata1[index]
+                                                    ["message"]!),
                                                 fit: BoxFit.cover,
-                                                image: NetworkImage(
-                                                  jsondata1[index]["message"]!,
-                                                ),
                                               ),
                                             ),
-                                            child: Image.file(
-                                              File(
-                                                  jsondata1[index]["message"]!),
-                                              width: 80,
-                                              height: 80,
-                                            ),
-                                          ),
+                                            Flexible(
+                                                child: Container(
+                                              width: 200,
+                                              child: Text(
+                                                  jsondata1[index]["text"]),
+                                            )),
+                                          ],
                                         ),
                                         Text(
                                           jsondata1[index]["date"]!,
@@ -539,8 +608,7 @@ class _Chat_app0State extends State<Chat_app0> {
                                           textAlign: TextAlign.end,
                                         ),
                                       ],
-                                    ),
-                                    //Text(path1!),
+                                    )
                                   ],
                                 ),
                               ),
@@ -557,23 +625,20 @@ class _Chat_app0State extends State<Chat_app0> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (
-                    //a == true &&
-                    messageController != '' && messageController == '*.jpg' ||
-                        prevMsgType == 'Image1')
-                  Image.file(File(messageController), height: 100, width: 100)
-                else if (
-                    //a == true &&
-                    messageController == '*.mp4' ||
-                        messageController != '' && prevMsgType == 'Video1')
+                if (messageController == '*.jpg' ||
+                    messageController != '' && prevMsgType == 'Image1')
+                  Image.file(File(messageController.toString()),
+                      height: 70, width: 70)
+                else if (messageController == '*.mp4' ||
+                    messageController != '' && prevMsgType == 'Video1')
                   Flexible(
                     child: Container(
                       height: 100,
                       width: 171,
                       child: FlickVideoPlayer(
                         flickManager: FlickManager(
-                          videoPlayerController:
-                              VideoPlayerController.network(messageController),
+                          videoPlayerController: VideoPlayerController.network(
+                              messageController.toString()),
                         ),
                       ),
                     ),
@@ -591,13 +656,13 @@ class _Chat_app0State extends State<Chat_app0> {
                             flickManager: FlickManager(
                               videoPlayerController:
                                   VideoPlayerController.network(
-                                      pickedVideo!.path),
+                                      pickedVideo!.path.toString()),
                             ),
                           ),
                         ),
                       )
-                    : pickedFile != null
-                        ? Image.file(File(pickedFile!.path))
+                    : (pickedFile != null)
+                        ? Image.file(File(pickedFile!.path.toString()))
                         : Flexible(
                             child: SingleChildScrollView(
                               child: _buildCustomLinkPreview(
@@ -621,41 +686,77 @@ class _Chat_app0State extends State<Chat_app0> {
                       onPressed: () {
                         setState(() {
                           if (pickedVideo != null && prevMsgType == "Text1") {
-                            _getTextFromUser("user1", pickedVideo!.path,
-                                "Video", messageController, "Text1");
+                            _getTextFromUser(
+                                "user1",
+                                pickedVideo!.path,
+                                "Video",
+                                messageController,
+                                "Text1",
+                                textController1.text);
                           } else if (pickedVideo != null &&
                               prevMsgType == "Video1") {
-                            _getTextFromUser("user1", pickedVideo!.path,
-                                "Video", messageController, "Video1");
+                            _getTextFromUser(
+                                "user1",
+                                pickedVideo!.path,
+                                "Video",
+                                messageController,
+                                "Video1",
+                                textController1.text);
                           } else if (pickedVideo != null &&
                               prevMsgType == "Image1") {
-                            _getTextFromUser("user1", pickedVideo!.path,
-                                "Video", messageController, "Image1");
+                            _getTextFromUser(
+                                "user1",
+                                pickedVideo!.path,
+                                "Video",
+                                messageController,
+                                "Image1",
+                                textController1.text);
                           } else if (pickedFile != null &&
                               prevMsgType == "Text1") {
-                            _getTextFromUser("user1", pickedFile!.path, "image",
-                                messageController, "Text1");
+                            _getTextFromUser(
+                                "user1",
+                                pickedFile!.path,
+                                "image",
+                                messageController,
+                                "Text1",
+                                textController1.text);
                           } else if (pickedFile != null &&
                               prevMsgType == "Video1") {
-                            _getTextFromUser("user1", pickedFile!.path, "image",
-                                messageController, "Video1");
+                            _getTextFromUser(
+                                "user1",
+                                pickedFile!.path,
+                                "image",
+                                messageController,
+                                "Video1",
+                                textController1.text);
                           } else if (pickedFile != null &&
                               prevMsgType == "Image1") {
-                            _getTextFromUser("user1", pickedFile!.path, "image",
-                                messageController, "Image1");
+                            _getTextFromUser(
+                                "user1",
+                                pickedFile!.path,
+                                "image",
+                                messageController,
+                                "Image1",
+                                textController1.text);
                           } else if (textController1.text != null &&
+                              textController1.text != '' &&
                               prevMsgType == "Text1") {
                             _getTextFromUser("user1", textController1.text,
-                                "Text", messageController, "Text1");
+                                "Text", messageController, "Text1", "");
                           } else if (textController1.text != null &&
+                              textController1.text != '' &&
                               prevMsgType == "Video1") {
                             _getTextFromUser("user1", textController1.text,
-                                "Text", messageController, "Video1");
-                          } else {
+                                "Text", messageController, "Video1", "");
+                            print("Video1");
+                          } else if (textController1.text != null &&
+                              textController1.text != '' &&
+                              prevMsgType == "Image1") {
                             _getTextFromUser("user1", textController1.text,
-                                "Text", messageController, "Image1");
+                                "Text", messageController, "Image1", "");
+                            print("Image1");
 
-                            FocusScope.of(context).unfocus();
+                            // FocusScope.of(context).unfocus();
                           }
                           _scrollToBottom();
                         });
@@ -669,16 +770,78 @@ class _Chat_app0State extends State<Chat_app0> {
                           color: Colors.blueAccent),
                       onPressed: () {
                         setState(() {
-                          if (pickedVideo != null) {
-                            _getTextFromUser("user2", pickedVideo!.path,
-                                "Video", messageController, "");
-                          } else if (pickedFile != null) {
-                            _getTextFromUser("user2", pickedFile!.path, "image",
-                                messageController, "");
-                          } else {
+                          if (pickedVideo != null && prevMsgType == "Text1") {
+                            _getTextFromUser(
+                                "user2",
+                                pickedVideo!.path,
+                                "Video",
+                                messageController,
+                                "Text1",
+                                textController1.text);
+                          } else if (pickedVideo != null &&
+                              prevMsgType == "Video1") {
+                            _getTextFromUser(
+                                "user2",
+                                pickedVideo!.path,
+                                "Video",
+                                messageController,
+                                "Video1",
+                                textController1.text);
+                          } else if (pickedVideo != null &&
+                              prevMsgType == "Image1") {
+                            _getTextFromUser(
+                                "user2",
+                                pickedVideo!.path,
+                                "Video",
+                                messageController,
+                                "Image1",
+                                textController1.text);
+                          } else if (pickedFile != null &&
+                              prevMsgType == "Text1") {
+                            _getTextFromUser(
+                                "user2",
+                                pickedFile!.path,
+                                "image",
+                                messageController,
+                                "Text1",
+                                textController1.text);
+                          } else if (pickedFile != null &&
+                              prevMsgType == "Video1") {
+                            _getTextFromUser(
+                                "user2",
+                                pickedFile!.path,
+                                "image",
+                                messageController,
+                                "Video1",
+                                textController1.text);
+                          } else if (pickedFile != null &&
+                              prevMsgType == "Image1") {
+                            _getTextFromUser(
+                                "user2",
+                                pickedFile!.path,
+                                "image",
+                                messageController,
+                                "Image1",
+                                textController1.text);
+                          } else if (textController1.text != null &&
+                              textController1.text != '' &&
+                              prevMsgType == "Text1") {
                             _getTextFromUser("user2", textController1.text,
-                                "Text", messageController, "");
-                            FocusScope.of(context).unfocus();
+                                "Text", messageController, "Text1", "");
+                          } else if (textController1.text != null &&
+                              textController1.text != '' &&
+                              prevMsgType == "Video1") {
+                            _getTextFromUser("user2", textController1.text,
+                                "Text", messageController, "Video1", "");
+                            print("Video1");
+                          } else if (textController1.text != null &&
+                              textController1.text != '' &&
+                              prevMsgType == "Image1") {
+                            _getTextFromUser("user2", textController1.text,
+                                "Text", messageController, "Image1", "");
+                            print("Image1");
+
+                            // FocusScope.of(context).unfocus();
                           }
                           _scrollToBottom();
                         });
@@ -700,7 +863,6 @@ class _Chat_app0State extends State<Chat_app0> {
                         onPressed: () {
                           setState(() {
                             _getFromVideo();
-                            print("path${pickedVideo!.path}");
                             textController1.clear();
                           });
                         },
@@ -710,27 +872,29 @@ class _Chat_app0State extends State<Chat_app0> {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
   _getFromCamera() async {
+    //isImagePicked.value = true;
     pickedFile = await ImagePicker().getImage(
       source: ImageSource.camera,
       maxWidth: 100,
       maxHeight: 100,
     );
     if (pickedFile != null) {
-      setState(() {
-        path1 = pickedFile!.path;
-        print(pickedFile!.path);
-      });
+      // isImagePicked.value = true;
+      setState(() {});
     }
   }
 
+  // path1 = pickedFile!.path;
+  // print(pickedFile!.path);
   _getFromVideo() async {
+    //isVideoPicked.value = true;
     pickedVideo = await ImagePicker().getVideo(
       source: ImageSource.gallery,
     );
@@ -741,7 +905,7 @@ class _Chat_app0State extends State<Chat_app0> {
     }
   }
 
-  _getTextFromUser(sender, msg, type, preMsg, preType) {
+  _getTextFromUser(sender, msg, type, preMsg, preType, textMsg) {
     setState(() {
       jsondata1.add({
         "sender": sender,
@@ -750,6 +914,7 @@ class _Chat_app0State extends State<Chat_app0> {
         "date": intl.DateFormat.jm().format(DateTime.now()),
         "preMsg": preMsg,
         "prevMsgType": preType,
+        "text": textMsg,
       });
       textController1.clear();
     });

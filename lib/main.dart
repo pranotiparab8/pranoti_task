@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 
-import 'Pages/Hello.dart';
+import 'Pages/ChatApp/hello1.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,9 +10,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Chat_app0(),
+      home: Chat_app8(),
     );
   }
 }
