@@ -8,14 +8,14 @@ import 'package:intl/intl.dart' as intl;
 import 'package:lecle_flutter_link_preview/lecle_flutter_link_preview.dart';
 import 'package:video_player/video_player.dart';
 
-class Chat_app0 extends StatefulWidget {
-  const Chat_app0({Key? key}) : super(key: key);
+class Chat_app10 extends StatefulWidget {
+  const Chat_app10({Key? key}) : super(key: key);
 
   @override
-  State<Chat_app0> createState() => _Chat_app0State();
+  State<Chat_app10> createState() => _Chat_app10State();
 }
 
-class _Chat_app0State extends State<Chat_app0> {
+class _Chat_app10State extends State<Chat_app10> {
   final ScrollController _scrollController = ScrollController();
   PickedFile? pickedFile;
   PickedFile? pickedVideo;
@@ -262,7 +262,10 @@ class _Chat_app0State extends State<Chat_app0> {
                                 //   )
                                 // else
                                 //   Container(height: 0),
-                                if (jsondata1[index]["prevMsgType"] == "Text1")
+                                if (jsondata1[index]["prevMsgType"] ==
+                                        "Text1" &&
+                                    jsondata1[index]["preMsg"] != null &&
+                                    jsondata1[index]["preMsg"] != '')
                                   Text(jsondata1[index]["preMsg"]!)
                                 else if (jsondata1[index]["prevMsgType"] ==
                                     "Video1")
@@ -286,13 +289,18 @@ class _Chat_app0State extends State<Chat_app0> {
                                   Container(width: 0),
                                 _buildCustomLinkPreview(
                                     context, jsondata1[index]["message"]!),
+
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Flexible(
-                                        child:
-                                            Text(jsondata1[index]["message"]!)),
+                                    if (jsondata1[index]["message"] != null &&
+                                        jsondata1[index]["message"] != '')
+                                      Flexible(
+                                          child: Text(
+                                              jsondata1[index]["message"]!)),
+                                    // if (jsondata1[index]["message"] != null &&
+                                    //     jsondata1[index]["message"] != '')
                                     Text(
                                       jsondata1[index]["date"]!,
                                       style: const TextStyle(fontSize: 12),
@@ -643,15 +651,19 @@ class _Chat_app0State extends State<Chat_app0> {
                               prevMsgType == "Image1") {
                             _getTextFromUser("user1", pickedFile!.path, "image",
                                 messageController, "Image1");
-                          } else if (textController1.text != null &&
+                          } else if (
+                              //textController1.text == null &&
                               prevMsgType == "Text1") {
                             _getTextFromUser("user1", textController1.text,
                                 "Text", messageController, "Text1");
-                          } else if (textController1.text != null &&
+                          } else if (
+                              //textController1.text == null &&
                               prevMsgType == "Video1") {
                             _getTextFromUser("user1", textController1.text,
                                 "Text", messageController, "Video1");
-                          } else {
+                          } else if (
+                              //textController1.text == null &&
+                              prevMsgType == "Image1") {
                             _getTextFromUser("user1", textController1.text,
                                 "Text", messageController, "Image1");
 

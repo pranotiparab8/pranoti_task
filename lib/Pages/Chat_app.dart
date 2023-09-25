@@ -8,14 +8,14 @@ import 'package:intl/intl.dart' as intl;
 import 'package:lecle_flutter_link_preview/lecle_flutter_link_preview.dart';
 import 'package:video_player/video_player.dart';
 
-class Chat_app4 extends StatefulWidget {
-  const Chat_app4({Key? key}) : super(key: key);
+class Chat_app0 extends StatefulWidget {
+  const Chat_app0({Key? key}) : super(key: key);
 
   @override
-  State<Chat_app4> createState() => _Chat_app4State();
+  State<Chat_app0> createState() => _Chat_app0State();
 }
 
-class _Chat_app4State extends State<Chat_app4> {
+class _Chat_app0State extends State<Chat_app0> {
   final ScrollController _scrollController = ScrollController();
   PickedFile? pickedFile;
   PickedFile? pickedVideo;
@@ -37,6 +37,7 @@ class _Chat_app4State extends State<Chat_app4> {
       "messageType": "Text",
       "date": "12:12PM",
       "preMsg": "",
+      "preMsgType": "",
     },
     {
       "sender": "user2",
@@ -45,6 +46,7 @@ class _Chat_app4State extends State<Chat_app4> {
       "messageType": "Text",
       "date": "12:12PM",
       "preMsg": "",
+      "preMsgType": "",
     },
     {
       "sender": "user1",
@@ -52,6 +54,7 @@ class _Chat_app4State extends State<Chat_app4> {
       "messageType": "Text",
       "date": "12:12PM",
       "preMsg": "",
+      "preMsgType": "",
     },
     {
       "sender": "user2",
@@ -59,6 +62,7 @@ class _Chat_app4State extends State<Chat_app4> {
       "messageType": "Text",
       "date": "12:12PM",
       "preMsg": "",
+      "preMsgType": "",
     },
     {
       "sender": "user2",
@@ -66,6 +70,7 @@ class _Chat_app4State extends State<Chat_app4> {
       "messageType": "Text",
       "date": "12:12PM",
       "preMsg": "",
+      "preMsgType": "",
     },
     {
       "sender": "user1",
@@ -73,6 +78,7 @@ class _Chat_app4State extends State<Chat_app4> {
       "messageType": "Text",
       "date": "12:12PM",
       "preMsg": "",
+      "preMsgType": "",
     },
     {
       "sender": "user2",
@@ -80,6 +86,7 @@ class _Chat_app4State extends State<Chat_app4> {
       "messageType": "Text",
       "date": "12:12PM",
       "preMsg": "",
+      "preMsgType": "",
     },
     {
       "sender": "user1",
@@ -87,6 +94,7 @@ class _Chat_app4State extends State<Chat_app4> {
       "messageType": "Text",
       "date": "12:12PM",
       "preMsg": "",
+      "preMsgType": "",
     },
     {
       "sender": "user2",
@@ -94,6 +102,7 @@ class _Chat_app4State extends State<Chat_app4> {
       "messageType": "Text",
       "date": "12:12PM",
       "preMsg": "",
+      "preMsgType": "",
     },
     {
       "sender": "user2",
@@ -101,6 +110,7 @@ class _Chat_app4State extends State<Chat_app4> {
       "messageType": "Text",
       "date": "12:12PM",
       "preMsg": "",
+      "preMsgType": "",
     },
     {
       "sender": "user2",
@@ -108,6 +118,7 @@ class _Chat_app4State extends State<Chat_app4> {
       "messageType": "Text",
       "date": "12:12PM",
       "preMsg": "",
+      "preMsgType": "",
     },
     {
       "sender": "user2",
@@ -115,6 +126,7 @@ class _Chat_app4State extends State<Chat_app4> {
       "messageType": "Text",
       "date": "12:12PM",
       "preMsg": "",
+      "preMsgType": "",
     },
     {
       "sender": "user2",
@@ -122,6 +134,7 @@ class _Chat_app4State extends State<Chat_app4> {
       "messageType": "Text",
       "date": "12:12PM",
       "preMsg": "",
+      "preMsgType": "",
     },
     {
       "sender": "user2",
@@ -129,12 +142,15 @@ class _Chat_app4State extends State<Chat_app4> {
       "messageType": "Text",
       "date": "12:12PM",
       "preMsg": "",
+      "preMsgType": "",
     },
   ];
   TextEditingController textController1 = TextEditingController();
-  TextEditingController messageController = TextEditingController();
+  late String messageController;
+  String prevMsgType = "Text1";
+  //TextEditingController messageController = TextEditingController();
   DateTime now = DateTime.now();
-  bool a = false;
+  //bool a = false;
 
   @override
   void initState() {
@@ -153,6 +169,7 @@ class _Chat_app4State extends State<Chat_app4> {
 
   @override
   Widget build(BuildContext context) {
+    //print(messageController.text);
     return Scaffold(
       appBar: AppBar(
         title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -174,13 +191,15 @@ class _Chat_app4State extends State<Chat_app4> {
               controller: _scrollController,
               itemCount: jsondata1.length,
               itemBuilder: (context, index) {
+                print(jsondata1);
                 return jsondata1[index]["messageType"] == "Text"
                     ? InkWell(
                         onTap: () {
                           setState(() {
-                            a = true;
-                            messageController.text =
-                                jsondata1[index]["message"]!;
+                            //a = true;
+                            messageController = jsondata1[index]["message"]!;
+                            prevMsgType = "Text1";
+                            // jsondata1[index]["prevMsgType"] = "Text1";
                           });
                         },
                         child: Align(
@@ -204,22 +223,82 @@ class _Chat_app4State extends State<Chat_app4> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // if (jsondata1[index]["date"]! ==
-                                //     intl.DateFormat.jm().format(DateTime.now()))
-                                if (jsondata1[index]["preMsg"] != '' &&
-                                    jsondata1[index]["preMsg"] != null)
-                                  Card(
-                                      color: Colors.lightBlue,
-                                      child: Text(jsondata1[index]["preMsg"]!)),
+                                // Card(
+                                //   color: Colors.lightBlue,
+                                // if (jsondata1[index]["preMsg"] != "" &&
+                                //         prevMsgType == "Text1" &&
+                                //         jsondata1[index]["preMsg"] != null &&
+                                //         // jsondata1[index]["preMsgType"] ==
+                                //         //     "Text1" &&
+                                //         jsondata1[index]["preMsgType"] != '' ||
+                                //     jsondata1[index]["preMsgType"] != null)
+                                //   Text(jsondata1[index]["preMsg"]!)
+                                // else if (jsondata1[index]["preMsg"] != '' &&
+                                //         jsondata1[index]["preMsg"] != null &&
+                                //         jsondata1[index]["preMsgType"] ==
+                                //             "Video1" ||
+                                //     prevMsgType == "Video1" &&
+                                //         messageController == '*.mp4')
+                                //   Flexible(
+                                //     child: Container(
+                                //       child: FlickVideoPlayer(
+                                //         flickManager: FlickManager(
+                                //           videoPlayerController:
+                                //               VideoPlayerController.network(
+                                //                   jsondata1[index]["preMsg"]!),
+                                //         ),
+                                //       ),
+                                //     ),
+                                //   )
+                                // else if (jsondata1[index]["preMsg"] != '' &&
+                                //     jsondata1[index]["preMsg"] != null &&
+                                //     jsondata1[index]["preMsgType"] ==
+                                //         "Image1" &&
+                                //     prevMsgType == "Image1" &&
+                                //     messageController == '*.jpg')
+                                //   Image.file(
+                                //     File(jsondata1[index]["preMsg"]!),
+                                //     width: 80,
+                                //     height: 80,
+                                //   )
+                                // else
+                                //   Container(height: 0),
+                                if (jsondata1[index]["prevMsgType"] ==
+                                        "Text1" &&
+                                    jsondata1[index]["prevMsg"] != '' &&
+                                    jsondata1[index]["prevMsg"] != null)
+                                  Text(jsondata1[index]["preMsg"]!)
+                                else if (jsondata1[index]["prevMsgType"] ==
+                                    "Video1")
+                                  Container(
+                                    child: FlickVideoPlayer(
+                                      flickManager: FlickManager(
+                                        videoPlayerController:
+                                            VideoPlayerController.network(
+                                                jsondata1[index]["preMsg"]!),
+                                      ),
+                                    ),
+                                  )
+                                else if (jsondata1[index]["prevMsgType"] ==
+                                    "Image1")
+                                  Image.file(
+                                    File(jsondata1[index]["preMsg"]!),
+                                    width: 80,
+                                    height: 80,
+                                  )
+                                else
+                                  Container(width: 0, height: 0),
                                 _buildCustomLinkPreview(
                                     context, jsondata1[index]["message"]!),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Flexible(
-                                        child:
-                                            Text(jsondata1[index]["message"]!)),
+                                    if (jsondata1[index]["message"] != null &&
+                                        jsondata1[index]["message"] != '')
+                                      Flexible(
+                                          child: Text(
+                                              jsondata1[index]["message"]!)),
                                     Text(
                                       jsondata1[index]["date"]!,
                                       style: const TextStyle(fontSize: 12),
@@ -236,9 +315,11 @@ class _Chat_app4State extends State<Chat_app4> {
                         ? InkWell(
                             onTap: () {
                               setState(() {
-                                a = true;
-                                messageController.text =
+                                //a = true;
+                                messageController =
                                     jsondata1[index]["message"]!;
+                                prevMsgType = "Video1";
+                                // jsondata1[index]["prevMsgType"] = "Video1";
                               });
                             },
                             child: Align(
@@ -262,13 +343,40 @@ class _Chat_app4State extends State<Chat_app4> {
                                   color: Colors.lightBlueAccent,
                                 ),
                                 child: Column(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     if (jsondata1[index]["preMsg"] != '' &&
                                         jsondata1[index]["preMsg"] != null)
                                       Card(
-                                          color: Colors.lightBlue,
-                                          child: Text(
-                                              jsondata1[index]["preMsg"]!)),
+                                        color: Colors.lightBlue,
+                                        child: jsondata1[index]
+                                                    ["prevMsgType"] ==
+                                                "Text1"
+                                            ? Text(jsondata1[index]["preMsg"]!)
+                                            : jsondata1[index]["prevMsgType"] ==
+                                                    "Video1"
+                                                ? Flexible(
+                                                    child: Container(
+                                                      child: FlickVideoPlayer(
+                                                        flickManager:
+                                                            FlickManager(
+                                                          videoPlayerController:
+                                                              VideoPlayerController
+                                                                  .network(jsondata1[
+                                                                          index]
+                                                                      [
+                                                                      "preMsg"]!),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Image.file(
+                                                    File(jsondata1[index]
+                                                        ["preMsg"]!),
+                                                    width: 80,
+                                                    height: 80,
+                                                  ),
+                                      ),
                                     _buildCustomLinkPreview(
                                         context, jsondata1[index]["message"]!),
                                     Row(
@@ -276,30 +384,30 @@ class _Chat_app4State extends State<Chat_app4> {
                                           CrossAxisAlignment.end,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Expanded(
+                                        Flexible(
                                           child: Container(
-                                            height: 150,
-                                            width: 100,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: NetworkImage(
-                                                  jsondata1[index]["message"]!,
-                                                ),
+                                            // height: 150,
+                                            // width: 100,
+                                            // decoration: BoxDecoration(
+                                            //   image: DecorationImage(
+                                            //     fit: BoxFit.cover,
+                                            //     image: NetworkImage(
+                                            //       jsondata1[index]["message"]!,
+                                            //     ),
+                                            //   ),
+                                            // ),
+                                            // child: AspectRatio(
+                                            //   aspectRatio: 3 / 4,
+                                            child: FlickVideoPlayer(
+                                              flickManager: FlickManager(
+                                                videoPlayerController:
+                                                    VideoPlayerController
+                                                        .network(
+                                                            jsondata1[index]
+                                                                ["message"]!),
                                               ),
                                             ),
-                                            child: AspectRatio(
-                                              aspectRatio: 3 / 4,
-                                              child: FlickVideoPlayer(
-                                                flickManager: FlickManager(
-                                                  videoPlayerController:
-                                                      VideoPlayerController
-                                                          .network(
-                                                              jsondata1[index]
-                                                                  ["message"]!),
-                                                ),
-                                              ),
-                                            ),
+                                            // ),
                                           ),
                                         ),
                                         Text(
@@ -318,9 +426,11 @@ class _Chat_app4State extends State<Chat_app4> {
                         : InkWell(
                             onTap: () {
                               setState(() {
-                                a = true;
-                                messageController.text =
+                                //a = true;
+                                messageController =
                                     jsondata1[index]["message"]!;
+                                prevMsgType = "Image1";
+                                // jsondata1[index]["prevMsgType"] = "Image1";
                               });
                             },
                             child: Align(
@@ -344,13 +454,64 @@ class _Chat_app4State extends State<Chat_app4> {
                                   color: Colors.lightBlueAccent,
                                 ),
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    if (jsondata1[index]["preMsg"] != '' &&
-                                        jsondata1[index]["preMsg"] != null)
-                                      Card(
-                                          color: Colors.lightBlue,
-                                          child: Text(
-                                              jsondata1[index]["preMsg"]!)),
+                                    // if (jsondata1[index]["preMsg"] != '' &&
+                                    //     jsondata1[index]["preMsg"] != null)
+                                    //   Card(
+                                    //     color: Colors.lightBlue,
+                                    //     child: jsondata1[index]
+                                    //                 ["prevMsgType"] ==
+                                    //             "Text1"
+                                    //         ? Text(jsondata1[index]["preMsg"]!)
+                                    //         : jsondata1[index]["prevMsgType"] ==
+                                    //                 "Video1"
+                                    //             ? Flexible(
+                                    //                 child: Container(
+                                    //                   child: FlickVideoPlayer(
+                                    //                     flickManager:
+                                    //                         FlickManager(
+                                    //                       videoPlayerController:
+                                    //                           VideoPlayerController
+                                    //                               .network(jsondata1[
+                                    //                                       index]
+                                    //                                   [
+                                    //                                   "preMsg"]!),
+                                    //                     ),
+                                    //                   ),
+                                    //                 ),
+                                    //               )
+                                    //             : Image.file(
+                                    //                 File(jsondata1[index]
+                                    //                     ["preMsg"]!),
+                                    //                 width: 80,
+                                    //                 height: 80,
+                                    //               ),
+                                    //   ),
+                                    if (jsondata1[index]["prevMsgType"] ==
+                                        "Text1")
+                                      Text(jsondata1[index]["preMsg"]!)
+                                    else if (jsondata1[index]["prevMsgType"] ==
+                                        "Video1")
+                                      Container(
+                                        child: FlickVideoPlayer(
+                                          flickManager: FlickManager(
+                                            videoPlayerController:
+                                                VideoPlayerController.network(
+                                                    jsondata1[index]
+                                                        ["preMsg"]!),
+                                          ),
+                                        ),
+                                      )
+                                    else if (jsondata1[index]["prevMsgType"] ==
+                                        "Image1")
+                                      Image.file(
+                                        File(jsondata1[index]["preMsg"]!),
+                                        width: 80,
+                                        height: 80,
+                                      )
+                                    else
+                                      Container(width: 0),
                                     _buildCustomLinkPreview(
                                         context, jsondata1[index]["message"]!),
                                     Row(
@@ -402,22 +563,45 @@ class _Chat_app4State extends State<Chat_app4> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (a == true || messageController.text != '')
-                  Text(messageController.text),
-                pickedVideo != null
-                    ? Container(
-                        height: 100,
-                        width: 171,
-                        child: FlickVideoPlayer(
-                            flickManager: FlickManager(
+                if (messageController == '*.jpg' ||
+                    messageController != '' && prevMsgType == 'Image1')
+                  Image.file(File(messageController), height: 100, width: 100)
+                else if (messageController == '*.mp4' ||
+                    messageController != '' && prevMsgType == 'Video1')
+                  Flexible(
+                    child: Container(
+                      height: 100,
+                      width: 171,
+                      child: FlickVideoPlayer(
+                        flickManager: FlickManager(
                           videoPlayerController:
-                              VideoPlayerController.network(pickedVideo!.path),
-                        )),
+                              VideoPlayerController.network(messageController),
+                        ),
+                      ),
+                    ),
+                  )
+                else if (messageController != '' &&
+                    prevMsgType == 'Text1' &&
+                    messageController != null)
+                  Text(messageController)
+                else
+                  Container(height: 0, width: 0),
+                pickedVideo != null
+                    ? Flexible(
+                        child: Container(
+                          height: 100,
+                          width: 171,
+                          child: FlickVideoPlayer(
+                            flickManager: FlickManager(
+                              videoPlayerController:
+                                  VideoPlayerController.network(
+                                      pickedVideo!.path),
+                            ),
+                          ),
+                        ),
                       )
                     : pickedFile != null
                         ? Image.file(File(pickedFile!.path))
-                        // : (a == true || messageController.text != '')
-                        //     ? Text(messageController.text)
                         : Flexible(
                             child: SingleChildScrollView(
                               child: _buildCustomLinkPreview(
@@ -440,21 +624,52 @@ class _Chat_app4State extends State<Chat_app4> {
                           color: Colors.blueAccent),
                       onPressed: () {
                         setState(() {
-                          if (pickedVideo != null) {
+                          if (pickedVideo != null && prevMsgType == "Text1") {
                             _getTextFromUser("user1", pickedVideo!.path,
-                                "Video", messageController.text);
-                          } else if (pickedFile != null) {
+                                "Video", messageController, "Text1");
+                          } else if (pickedVideo != null &&
+                              prevMsgType == "Video1") {
+                            _getTextFromUser("user1", pickedVideo!.path,
+                                "Video", messageController, "Video1");
+                          } else if (pickedVideo != null &&
+                              prevMsgType == "Image1") {
+                            _getTextFromUser("user1", pickedVideo!.path,
+                                "Video", messageController, "Image1");
+                          } else if (pickedFile != null &&
+                              prevMsgType == "Text1") {
                             _getTextFromUser("user1", pickedFile!.path, "image",
-                                messageController.text);
+                                messageController, "Text1");
+                          } else if (pickedFile != null &&
+                              prevMsgType == "Video1") {
+                            _getTextFromUser("user1", pickedFile!.path, "image",
+                                messageController, "Video1");
+                          } else if (pickedFile != null &&
+                              prevMsgType == "Image1") {
+                            _getTextFromUser("user1", pickedFile!.path, "image",
+                                messageController, "Image1");
+                          } else if (textController1.text != '' &&
+                              textController1.text != null &&
+                              prevMsgType == "Text1" &&
+                              messageController != null &&
+                              messageController != '') {
+                            _getTextFromUser("user1", textController1.text,
+                                "Text", messageController, "Text1");
+                          } else if (textController1.text != '' &&
+                              textController1.text != null &&
+                              prevMsgType == "Video1" &&
+                              messageController != null &&
+                              messageController != '') {
+                            _getTextFromUser("user1", textController1.text,
+                                "Text", messageController, "Video1");
                           } else {
                             _getTextFromUser("user1", textController1.text,
-                                "Text", messageController.text);
+                                "Text", messageController, "Image1");
 
                             FocusScope.of(context).unfocus();
                           }
                           _scrollToBottom();
                         });
-                        messageController.text = '';
+                        messageController = '';
                         pickedVideo = null;
                         pickedFile = null;
                       },
@@ -466,18 +681,18 @@ class _Chat_app4State extends State<Chat_app4> {
                         setState(() {
                           if (pickedVideo != null) {
                             _getTextFromUser("user2", pickedVideo!.path,
-                                "Video", messageController.text);
+                                "Video", messageController, "");
                           } else if (pickedFile != null) {
                             _getTextFromUser("user2", pickedFile!.path, "image",
-                                messageController.text);
+                                messageController, "");
                           } else {
                             _getTextFromUser("user2", textController1.text,
-                                "Text", messageController.text);
+                                "Text", messageController, "");
                             FocusScope.of(context).unfocus();
                           }
                           _scrollToBottom();
                         });
-                        messageController.text = '';
+                        messageController = '';
                         pickedVideo = null;
                         pickedFile = null;
                       },
@@ -520,6 +735,7 @@ class _Chat_app4State extends State<Chat_app4> {
     if (pickedFile != null) {
       setState(() {
         path1 = pickedFile!.path;
+        // print(pickedFile!.path);
       });
     }
   }
@@ -535,7 +751,7 @@ class _Chat_app4State extends State<Chat_app4> {
     }
   }
 
-  _getTextFromUser(sender, msg, type, preMsg) {
+  _getTextFromUser(sender, msg, type, preMsg, preType) {
     setState(() {
       jsondata1.add({
         "sender": sender,
@@ -543,6 +759,7 @@ class _Chat_app4State extends State<Chat_app4> {
         "messageType": type,
         "date": intl.DateFormat.jm().format(DateTime.now()),
         "preMsg": preMsg,
+        "prevMsgType": preType,
       });
       textController1.clear();
     });
