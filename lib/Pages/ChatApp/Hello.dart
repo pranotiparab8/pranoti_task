@@ -1,162 +1,48 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flick_video_player_custom/flick_video_player_custom.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart' as intl;
+import 'package:get/get.dart';
 import 'package:lecle_flutter_link_preview/lecle_flutter_link_preview.dart';
+import 'package:pranoti_task/Pages/ChatApp/thumbVideo.dart';
 import 'package:video_player/video_player.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
-class Chat_app11 extends StatefulWidget {
-  const Chat_app11({Key? key}) : super(key: key);
+import 'controller.dart';
+
+class Chat_app9 extends StatefulWidget {
+  const Chat_app9({Key? key}) : super(key: key);
 
   @override
-  State<Chat_app11> createState() => _Chat_app11State();
+  State<Chat_app9> createState() => _Chat_app9State();
 }
 
-class _Chat_app11State extends State<Chat_app11> {
+class _Chat_app9State extends State<Chat_app9> {
+  MyController myController = Get.put(MyController());
   final ScrollController _scrollController = ScrollController();
-  PickedFile? pickedFile;
-  PickedFile? pickedVideo;
-  String? path1;
-  String? path2;
 
-  var jsondata = [
-    {"user1": "Hello "},
-    {"user2": "how r u?"},
-    {"user1": "Hi"},
-    {"user2": "m fine."},
-    {"user2": "Ok"}
-  ];
-  final List<Map<String, dynamic>> jsondata1 = [
-    {
-      "sender": "user1",
-      "message":
-          "Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello ",
-      "messageType": "Text",
-      "date": "12:12PM",
-      "preMsg": "",
-      "preMsgType": "",
-    },
-    {
-      "sender": "user2",
-      "message":
-          "how r u? how r u? how r u? how r u? how r u? how r u? how r u? how r u? how r u? how r u? how r u? ",
-      "messageType": "Text",
-      "date": "12:12PM",
-      "preMsg": "",
-      "preMsgType": "",
-    },
-    {
-      "sender": "user1",
-      "message": "Hi",
-      "messageType": "Text",
-      "date": "12:12PM",
-      "preMsg": "",
-      "preMsgType": "",
-    },
-    {
-      "sender": "user2",
-      "message": "https://youtu.be/RLzC55ai0eo?si=VFDXG330V1wejWaf",
-      "messageType": "Text",
-      "date": "12:12PM",
-      "preMsg": "",
-      "preMsgType": "",
-    },
-    {
-      "sender": "user2",
-      "message": "Ok",
-      "messageType": "Text",
-      "date": "12:12PM",
-      "preMsg": "",
-      "preMsgType": "",
-    },
-    {
-      "sender": "user1",
-      "message": "Hello",
-      "messageType": "Text",
-      "date": "12:12PM",
-      "preMsg": "",
-      "preMsgType": "",
-    },
-    {
-      "sender": "user2",
-      "message": "how r u?",
-      "messageType": "Text",
-      "date": "12:12PM",
-      "preMsg": "",
-      "preMsgType": "",
-    },
-    {
-      "sender": "user1",
-      "message": "Hi",
-      "messageType": "Text",
-      "date": "12:12PM",
-      "preMsg": "",
-      "preMsgType": "",
-    },
-    {
-      "sender": "user2",
-      "message": "m fine.",
-      "messageType": "Text",
-      "date": "12:12PM",
-      "preMsg": "",
-      "preMsgType": "",
-    },
-    {
-      "sender": "user2",
-      "message": "Ok",
-      "messageType": "Text",
-      "date": "12:12PM",
-      "preMsg": "",
-      "preMsgType": "",
-    },
-    {
-      "sender": "user2",
-      "message": "m fine.",
-      "messageType": "Text",
-      "date": "12:12PM",
-      "preMsg": "",
-      "preMsgType": "",
-    },
-    {
-      "sender": "user2",
-      "message": "Ok",
-      "messageType": "Text",
-      "date": "12:12PM",
-      "preMsg": "",
-      "preMsgType": "",
-    },
-    {
-      "sender": "user2",
-      "message": "m fine.",
-      "messageType": "Text",
-      "date": "12:12PM",
-      "preMsg": "",
-      "preMsgType": "",
-    },
-    {
-      "sender": "user2",
-      "message": "Ok",
-      "messageType": "Text",
-      "date": "12:12PM",
-      "preMsg": "",
-      "preMsgType": "",
-    },
-  ];
-  TextEditingController textController1 = TextEditingController();
-  String messageController = "";
-  String prevMsgType = "Text1";
+  // String? path1;
+  // String? path2;
+
   DateTime now = DateTime.now();
-  // RxBool isImagePicked = false.obs;
-  // RxBool isVideoPicked = false.obs;
+
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _scrollToBottom();
     });
+  }
+
+  Chewie buildChewie(int index, var videourl) {
+    return Chewie(
+        controller: ChewieController(
+      videoPlayerController: VideoPlayerController.network(videourl),
+      autoInitialize: true,
+      looping: true,
+    ));
   }
 
   @override
@@ -184,373 +70,719 @@ class _Chat_app11State extends State<Chat_app11> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: jsondata1.length,
-              itemBuilder: (context, index) {
-                return jsondata1[index]["messageType"] == "Text"
-                    ? InkWell(
-                        onTap: () {
-                          setState(() {
-                            messageController = jsondata1[index]["message"]!;
-                            prevMsgType = "Text1";
-                          });
-                        },
-                        child: Align(
-                          alignment: jsondata1[index]["sender"] == "user1"
-                              ? Alignment.centerRight
-                              : Alignment.centerLeft,
-                          child: Container(
-                            padding:
-                                const EdgeInsets.all(4).copyWith(bottom: 8),
-                            margin: jsondata1[index]["sender"] == "user1"
-                                ? EdgeInsets.only(left: 100, right: 8, top: 8)
-                                : EdgeInsets.only(right: 100, left: 8, top: 8),
-                            decoration: BoxDecoration(
-                              borderRadius: jsondata1[index]["sender"] ==
-                                      "user1"
-                                  ? BorderRadius.circular(8)
-                                      .copyWith(bottomRight: Radius.circular(0))
-                                  : BorderRadius.circular(8)
-                                      .copyWith(bottomLeft: Radius.circular(0)),
-                              color: Colors.lightBlueAccent,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                if (jsondata1[index]["prevMsgType"] ==
-                                        "Text1" &&
-                                    jsondata1[index]["preMsg"] != null &&
-                                    jsondata1[index]["preMsg"] != '')
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    child: Container(
-                                      // width: double.infinity,
-                                      decoration: BoxDecoration(
-                                        color: Colors.blue,
-                                        border: Border(
-                                            left: BorderSide(
-                                          color: Colors.yellow,
-                                          width: 4.0,
-                                        )),
-                                      ),
-                                      child: Flexible(
-                                        child:
-                                            Text(jsondata1[index]["preMsg"]!),
-                                      ),
-                                    ),
-                                  )
-                                else if (jsondata1[index]["prevMsgType"] ==
-                                        "Video1" &&
-                                    jsondata1[index]["preMsg"] != null &&
-                                    jsondata1[index]["preMsg"] != '')
-                                  Container(
-                                    child: FlickVideoPlayer(
-                                      flickManager: FlickManager(
-                                        videoPlayerController:
-                                            VideoPlayerController.network(
-                                                jsondata1[index]["preMsg"]!),
-                                      ),
-                                    ),
-                                  )
-                                else if (jsondata1[index]["prevMsgType"] ==
-                                        "Image1" &&
-                                    jsondata1[index]["preMsg"] != null &&
-                                    jsondata1[index]["preMsg"] != '')
-                                  Image.file(
-                                    File(jsondata1[index]["preMsg"]!),
-                                    width: 80,
-                                    height: 80,
-                                  )
-                                else
-                                  Container(width: 0),
-                                _buildCustomLinkPreview(
-                                    context, jsondata1[index]["message"]!),
-                                if (jsondata1[index]["message"] != null &&
-                                        jsondata1[index]["message"] != '' &&
-                                        jsondata1[index]["preMsg"] != null ||
-                                    jsondata1[index]["preMsg"] != '')
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Flexible(
-                                          child: Text(
-                                              jsondata1[index]["message"]!)),
-                                      Transform.translate(
-                                        offset: Offset(0, 6.0),
-                                        child: Text(
-                                          jsondata1[index]["date"]!,
-                                          style: const TextStyle(fontSize: 12),
-                                          textAlign: TextAlign.right,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                    : jsondata1[index]["messageType"] == "Video"
+            child: Obx(() => ListView.builder(
+                  controller: _scrollController,
+                  itemCount: myController.jsondata1.value.length,
+                  itemBuilder: (context, index) {
+                    return myController.jsondata1.value[index]["messageType"] ==
+                            "Text"
                         ? InkWell(
                             onTap: () {
-                              setState(() {
-                                messageController =
-                                    jsondata1[index]["message"]!;
-                                prevMsgType = "Video1";
-                              });
+                              // setState(() {
+                              myController.messageController = myController
+                                  .jsondata1.value[index]["message"]!;
+                              myController.prevMsgType.value = "Text1";
+                              // });
                             },
                             child: Align(
-                              alignment: jsondata1[index]["sender"] == "user1"
+                              alignment: myController.jsondata1.value[index]
+                                          ["sender"] ==
+                                      "user1"
                                   ? Alignment.centerRight
                                   : Alignment.centerLeft,
                               child: Container(
-                                padding: const EdgeInsets.all(4),
-                                margin: jsondata1[index]["sender"] == "user1"
+                                padding:
+                                    const EdgeInsets.all(4).copyWith(bottom: 8),
+                                margin: myController.jsondata1.value[index]
+                                            ["sender"] ==
+                                        "user1"
                                     ? EdgeInsets.only(
                                         left: 100, right: 8, top: 8)
                                     : EdgeInsets.only(
                                         right: 100, left: 8, top: 8),
                                 decoration: BoxDecoration(
-                                  borderRadius: jsondata1[index]["sender"] ==
+                                  borderRadius: myController.jsondata1
+                                              .value[index]["sender"] ==
                                           "user1"
                                       ? BorderRadius.circular(8).copyWith(
-                                          bottomRight: const Radius.circular(0))
+                                          bottomRight: Radius.circular(0))
                                       : BorderRadius.circular(8).copyWith(
-                                          bottomLeft: const Radius.circular(0)),
+                                          bottomLeft: Radius.circular(0)),
                                   color: Colors.lightBlueAccent,
                                 ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    if (jsondata1[index]["preMsg"] != '' &&
-                                        jsondata1[index]["preMsg"] != null)
-                                      Card(
-                                        color: Colors.lightBlue,
-                                        child: jsondata1[index]
-                                                    ["prevMsgType"] ==
-                                                "Text1"
-                                            ? ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(2.0),
-                                                child: Container(
-                                                    width: double.infinity,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.blue,
-                                                      border: Border(
-                                                          left: BorderSide(
-                                                        color: Colors.yellow,
-                                                        width: 4.0,
-                                                      )),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
+                                child: IntrinsicWidth(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      if (myController.jsondata1.value[index]
+                                                  ["prevMsgType"] ==
+                                              "Text1" &&
+                                          myController.jsondata1.value[index]
+                                                  ["preMsg"] !=
+                                              null &&
+                                          myController.jsondata1.value[index]
+                                                  ["preMsg"] !=
+                                              '')
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.blue,
+                                            border: Border(
+                                                left: BorderSide(
+                                              color: Colors.yellow,
+                                              width: 4.0,
+                                            )),
+                                          ),
+                                          child: Text(myController.jsondata1
+                                              .value[index]["preMsg"]!),
+                                        )
+                                      else if (myController
+                                                      .jsondata1.value[index]
+                                                  ["prevMsgType"] ==
+                                              "Video1" &&
+                                          myController.jsondata1.value[index]
+                                                  ["preMsg"] !=
+                                              null &&
+                                          myController.jsondata1.value[index]
+                                                  ["preMsg"] !=
+                                              '')
+                                        InkWell(
+                                          onTap: () {
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //     builder: (context) =>
+                                            Get.to(VideoPage(
+                                                videoUrl: myController.jsondata1
+                                                    .value[index]["preMsg"]!));
+                                            //   ),
+                                            // );
+                                          },
+                                          child: Container(
+                                            height: 200,
+                                            child:
+                                                // buildChewie(
+                                                //     index, jsondata1[index]["preMsg"]!),
+                                                FutureBuilder<String?>(
+                                              future: generateThumbnail(
+                                                  myController.jsondata1
+                                                      .value[index]["preMsg"]!),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.done) {
+                                                  if (snapshot.hasData) {
+                                                    return Stack(
                                                       children: [
-                                                        const SizedBox(
-                                                            width: 9.0),
-                                                        Flexible(
-                                                          child: Text(
-                                                              jsondata1[index]
-                                                                  ["preMsg"]!),
+                                                        Image.file(File(
+                                                            snapshot.data!)),
+                                                        Center(
+                                                          child: CircleAvatar(
+                                                            backgroundColor:
+                                                                Colors.black54,
+                                                            radius: 30,
+                                                            child: Center(
+                                                              child: Icon(
+                                                                  Icons
+                                                                      .arrow_right,
+                                                                  size: 50,
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ),
                                                         ),
                                                       ],
-                                                    )),
-                                              )
-                                            : jsondata1[index]["prevMsgType"] ==
-                                                    "Video1"
-                                                ? Flexible(
-                                                    child: Container(
-                                                      child: FlickVideoPlayer(
-                                                        flickManager:
-                                                            FlickManager(
-                                                          videoPlayerController:
-                                                              VideoPlayerController
-                                                                  .network(jsondata1[
-                                                                          index]
-                                                                      [
-                                                                      "preMsg"]!),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )
-                                                : Image.file(
-                                                    File(jsondata1[index]
-                                                        ["preMsg"]!),
-                                                    width: 80,
-                                                    height: 80,
-                                                  ),
-                                      ),
-                                    _buildCustomLinkPreview(
-                                        context, jsondata1[index]["message"]!),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
+                                                    );
+                                                  } else {
+                                                    return Text(
+                                                        'Thumbnail not available');
+                                                  }
+                                                } else {
+                                                  return Center(
+                                                      child:
+                                                          CircularProgressIndicator()); // Display a loading indicator while generating the thumbnail.
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        )
+                                      else if (myController
+                                                      .jsondata1.value[index]
+                                                  ["prevMsgType"] ==
+                                              "Image1" &&
+                                          myController.jsondata1.value[index]
+                                                  ["preMsg"] !=
+                                              null &&
+                                          myController.jsondata1.value[index]
+                                                  ["preMsg"] !=
+                                              '')
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.blue,
+                                            border: Border(
+                                                left: BorderSide(
+                                              color: Colors.yellow,
+                                              width: 4.0,
+                                            )),
+                                          ),
+                                          child: Row(
                                             children: [
-                                              Flexible(
-                                                child: Container(
-                                                  child: FlickVideoPlayer(
-                                                    flickManager: FlickManager(
-                                                      videoPlayerController:
-                                                          VideoPlayerController
-                                                              .network(jsondata1[
-                                                                      index]
-                                                                  ["message"]!),
-                                                    ),
-                                                  ),
-                                                ),
+                                              Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text("You"),
+                                                    Row(
+                                                      children: [
+                                                        const Icon(Icons.photo),
+                                                        if (myController.jsondata1
+                                                                            .value[
+                                                                        index][
+                                                                    "preText"] !=
+                                                                null &&
+                                                            myController.jsondata1
+                                                                            .value[
+                                                                        index][
+                                                                    "preText"] !=
+                                                                '')
+                                                          Text(myController
+                                                                  .jsondata1
+                                                                  .value[index]
+                                                              ["preText"]),
+                                                      ],
+                                                    )
+                                                  ]),
+                                              Image.file(
+                                                File(myController.jsondata1
+                                                    .value[index]["preMsg"]!),
+                                                width: 50,
+                                                height: 50,
                                               ),
-                                              Text(jsondata1[index]["text"]),
                                             ],
                                           ),
+                                        )
+                                      else
+                                        Container(width: 0),
+                                      _buildCustomLinkPreview(
+                                          context,
+                                          myController.jsondata1.value[index]
+                                              ["message"]!),
+                                      if (myController.jsondata1.value[index]
+                                                      ["message"] !=
+                                                  null &&
+                                              myController.jsondata1
+                                                          .value[index]
+                                                      ["message"] !=
+                                                  '' &&
+                                              myController.jsondata1
+                                                      .value[index]["preMsg"] !=
+                                                  null ||
+                                          myController.jsondata1.value[index]
+                                                  ["preMsg"] !=
+                                              '')
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Flexible(
+                                                child: Text(myController
+                                                    .jsondata1
+                                                    .value[index]["message"]!)),
+                                            Transform.translate(
+                                              offset: Offset(0, 6.0),
+                                              child: Text(
+                                                myController.jsondata1
+                                                    .value[index]["date"]!,
+                                                style: const TextStyle(
+                                                    fontSize: 12),
+                                                textAlign: TextAlign.right,
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                        Text(
-                                          jsondata1[index]["date"]!,
-                                          style: const TextStyle(fontSize: 12),
-                                          textAlign: TextAlign.end,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           )
-                        : InkWell(
-                            onTap: () {
-                              setState(() {
-                                messageController =
-                                    jsondata1[index]["message"]!;
-                                prevMsgType = "Image1";
-                              });
-                            },
-                            child: Align(
-                              alignment: jsondata1[index]["sender"] == "user1"
-                                  ? Alignment.centerRight
-                                  : Alignment.centerLeft,
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                margin: jsondata1[index]["sender"] == "user1"
-                                    ? const EdgeInsets.only(
-                                        left: 100, right: 8, top: 8)
-                                    : const EdgeInsets.only(
-                                        right: 100, left: 8, top: 8),
-                                decoration: BoxDecoration(
-                                  borderRadius: jsondata1[index]["sender"] ==
+                        : myController.jsondata1.value[index]["messageType"] ==
+                                "Video"
+                            ? InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    myController.messageController =
+                                        myController.jsondata1.value[index]
+                                            ["message"]!;
+                                    myController.prevMsgType.value = "Video1";
+                                    myController.preTextMsgController =
+                                        myController.jsondata1.value[index]
+                                            ["text"]!;
+                                  });
+                                },
+                                child: Align(
+                                  alignment: myController.jsondata1.value[index]
+                                              ["sender"] ==
                                           "user1"
-                                      ? BorderRadius.circular(8).copyWith(
-                                          bottomRight: const Radius.circular(0))
-                                      : BorderRadius.circular(8).copyWith(
-                                          bottomLeft: const Radius.circular(0)),
-                                  color: Colors.lightBlueAccent,
-                                ),
-                                child: Column(
-                                  //mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    if (jsondata1[index]["prevMsgType"] ==
-                                            "Text1" &&
-                                        jsondata1[index]["preMsg"] != null &&
-                                        jsondata1[index]["preMsg"] != '')
-                                      ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(2.0),
-                                        child: Container(
-                                            //width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              color: Colors.blue,
-                                              border: Border(
-                                                  left: BorderSide(
-                                                color: Colors.yellow,
-                                                width: 4.0,
-                                              )),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                const SizedBox(width: 9.0),
-                                                Flexible(
-                                                  child: Text(jsondata1[index]
-                                                      ["preMsg"]!),
-                                                ),
-                                              ],
-                                            )),
-                                      )
-                                    else if (jsondata1[index]["prevMsgType"] ==
-                                            "Video1" &&
-                                        jsondata1[index]["preMsg"] != null &&
-                                        jsondata1[index]["preMsg"] != '')
-                                      Container(
-                                        child: FlickVideoPlayer(
-                                          flickManager: FlickManager(
-                                            videoPlayerController:
-                                                VideoPlayerController.network(
-                                                    jsondata1[index]
-                                                        ["preMsg"]!),
-                                          ),
-                                        ),
-                                      )
-                                    else if (jsondata1[index]["prevMsgType"] ==
-                                            "Image1" &&
-                                        jsondata1[index]["preMsg"] != null &&
-                                        jsondata1[index]["preMsg"] != '')
-                                      Image.file(
-                                        File(jsondata1[index]["preMsg"]!),
-                                        width: 80,
-                                        height: 80,
-                                      )
-                                    else
-                                      Container(width: 0),
-                                    _buildCustomLinkPreview(
-                                        context, jsondata1[index]["message"]!),
-                                    const SizedBox(height: 2),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      //mainAxisSize: MainAxisSize.min,
+                                      ? Alignment.centerRight
+                                      : Alignment.centerLeft,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    margin: myController.jsondata1.value[index]
+                                                ["sender"] ==
+                                            "user1"
+                                        ? EdgeInsets.only(
+                                            left: 100, right: 8, top: 8)
+                                        : EdgeInsets.only(
+                                            right: 100, left: 8, top: 8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: myController.jsondata1
+                                                  .value[index]["sender"] ==
+                                              "user1"
+                                          ? BorderRadius.circular(8).copyWith(
+                                              bottomRight:
+                                                  const Radius.circular(0))
+                                          : BorderRadius.circular(8).copyWith(
+                                              bottomLeft:
+                                                  const Radius.circular(0)),
+                                      color: Colors.lightBlueAccent,
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Column(
+                                        if (myController.jsondata1.value[index]
+                                                    ["preMsg"] !=
+                                                '' &&
+                                            myController.jsondata1.value[index]
+                                                    ["preMsg"] !=
+                                                null)
+                                          Card(
+                                            color: Colors.lightBlue,
+                                            child: myController.jsondata1[index]
+                                                        ["prevMsgType"] ==
+                                                    "Text1"
+                                                ? ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            2.0),
+                                                    child: Container(
+                                                        width: double.infinity,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.blue,
+                                                          border: Border(
+                                                              left: BorderSide(
+                                                            color:
+                                                                Colors.yellow,
+                                                            width: 4.0,
+                                                          )),
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            const SizedBox(
+                                                                width: 9.0),
+                                                            Flexible(
+                                                              child: Text(myController
+                                                                      .jsondata1
+                                                                      .value[index]
+                                                                  ["preMsg"]!),
+                                                            ),
+                                                          ],
+                                                        )),
+                                                  )
+                                                : myController.jsondata1
+                                                                .value[index]
+                                                            ["prevMsgType"] ==
+                                                        "Video1"
+                                                    ? InkWell(
+                                                        onTap: () {
+                                                          // Navigator.push(
+                                                          //   context,
+                                                          //   MaterialPageRoute(
+                                                          //     builder: (context) =>
+                                                          Get.to(VideoPage(
+                                                              videoUrl: myController
+                                                                      .jsondata1
+                                                                      .value[index]
+                                                                  ["preMsg"]!));
+                                                          //   ),
+                                                          // );
+                                                        },
+                                                        child: Container(
+                                                            height: 200,
+                                                            child:
+                                                                FutureBuilder<
+                                                                    String?>(
+                                                              future: generateThumbnail(
+                                                                  myController
+                                                                          .jsondata1
+                                                                          .value[index]
+                                                                      [
+                                                                      "preMsg"]!),
+                                                              builder: (context,
+                                                                  snapshot) {
+                                                                if (snapshot
+                                                                        .connectionState ==
+                                                                    ConnectionState
+                                                                        .done) {
+                                                                  if (snapshot
+                                                                      .hasData) {
+                                                                    return Stack(
+                                                                      children: [
+                                                                        Image.file(
+                                                                            File(snapshot.data!)),
+                                                                        CircleAvatar(
+                                                                            backgroundColor:
+                                                                                Colors.black54,
+                                                                            radius: 30),
+                                                                        Center(
+                                                                          child: Icon(
+                                                                              Icons.arrow_right,
+                                                                              size: 50,
+                                                                              color: Colors.white),
+                                                                        ),
+                                                                      ],
+                                                                    );
+                                                                  } else {
+                                                                    return Text(
+                                                                        'Thumbnail not available');
+                                                                  }
+                                                                } else {
+                                                                  return Center(
+                                                                      child:
+                                                                          CircularProgressIndicator()); // Display a loading indicator while generating the thumbnail.
+                                                                }
+                                                              },
+                                                            )),
+                                                      )
+                                                    : Image.file(
+                                                        File(myController
+                                                                .jsondata1
+                                                                .value[index]
+                                                            ["preMsg"]!),
+                                                        width: 80,
+                                                        height: 80,
+                                                      ),
+                                          ),
+                                        _buildCustomLinkPreview(
+                                            context,
+                                            myController.jsondata1.value[index]
+                                                ["message"]!),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Container(
-                                              width: 200,
-                                              height: 300,
-                                              child: Image.file(
-                                                File(jsondata1[index]
-                                                    ["message"]!),
-                                                fit: BoxFit.cover,
+                                            Expanded(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  InkWell(
+                                                    onTap: () {
+                                                      // Navigator.push(
+                                                      //   context,
+                                                      //   MaterialPageRoute(
+                                                      //     builder: (context) =>
+                                                      Get.to(VideoPage(
+                                                          videoUrl: myController
+                                                                  .jsondata1
+                                                                  .value[index]
+                                                              ["message"]!));
+                                                      //   ),
+                                                      // );
+                                                    },
+                                                    child: Container(
+                                                        height: 200,
+                                                        child:
+                                                            // buildChewie(
+                                                            //     index,
+                                                            //     jsondata1[index]
+                                                            //         ["message"]!),
+                                                            FutureBuilder<
+                                                                String?>(
+                                                          future: generateThumbnail(
+                                                              myController
+                                                                      .jsondata1
+                                                                      .value[index]
+                                                                  ["message"]!),
+                                                          builder: (context,
+                                                              snapshot) {
+                                                            if (snapshot
+                                                                    .connectionState ==
+                                                                ConnectionState
+                                                                    .done) {
+                                                              if (snapshot
+                                                                  .hasData) {
+                                                                return Stack(
+                                                                  children: [
+                                                                    Image.file(File(
+                                                                        snapshot
+                                                                            .data!)),
+                                                                    Center(
+                                                                      child: CircleAvatar(
+                                                                          backgroundColor: Colors
+                                                                              .black54,
+                                                                          radius:
+                                                                              30),
+                                                                    ),
+                                                                    Center(
+                                                                      child: Icon(
+                                                                          Icons
+                                                                              .arrow_right,
+                                                                          size:
+                                                                              50,
+                                                                          color:
+                                                                              Colors.white),
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              } else {
+                                                                return Text(
+                                                                    'Thumbnail not available');
+                                                              }
+                                                            } else {
+                                                              return Center(
+                                                                  child:
+                                                                      CircularProgressIndicator()); // Display a loading indicator while generating the thumbnail.
+                                                            }
+                                                          },
+                                                        )),
+                                                  ),
+                                                  Text(myController.jsondata1
+                                                      .value[index]["text"]),
+                                                ],
                                               ),
                                             ),
-                                            Flexible(
-                                                child: Container(
-                                              width: 200,
-                                              child: Text(
-                                                  jsondata1[index]["text"]),
-                                            )),
+                                            Text(
+                                              myController.jsondata1
+                                                  .value[index]["date"]!,
+                                              style:
+                                                  const TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.end,
+                                            ),
                                           ],
                                         ),
-                                        Text(
-                                          jsondata1[index]["date"]!,
-                                          style: const TextStyle(fontSize: 12),
-                                          textAlign: TextAlign.end,
-                                        ),
                                       ],
-                                    )
-                                  ],
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
-              },
-            ),
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    myController.messageController =
+                                        myController.jsondata1.value[index]
+                                            ["message"]!;
+                                    myController.prevMsgType.value = "Image1";
+                                    myController.preTextMsgController =
+                                        myController.jsondata1.value[index]
+                                            ["text"]!;
+                                  });
+                                },
+                                child: Align(
+                                  alignment: myController.jsondata1.value[index]
+                                              ["sender"] ==
+                                          "user1"
+                                      ? Alignment.centerRight
+                                      : Alignment.centerLeft,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    margin: myController.jsondata1.value[index]
+                                                ["sender"] ==
+                                            "user1"
+                                        ? const EdgeInsets.only(
+                                            left: 100, right: 8, top: 8)
+                                        : const EdgeInsets.only(
+                                            right: 100, left: 8, top: 8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: myController.jsondata1
+                                                  .value[index]["sender"] ==
+                                              "user1"
+                                          ? BorderRadius.circular(8).copyWith(
+                                              bottomRight:
+                                                  const Radius.circular(0))
+                                          : BorderRadius.circular(8).copyWith(
+                                              bottomLeft:
+                                                  const Radius.circular(0)),
+                                      color: Colors.lightBlueAccent,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        if (myController.jsondata1.value[index]
+                                                    ["prevMsgType"] ==
+                                                "Text1" &&
+                                            myController.jsondata1.value[index]
+                                                    ["preMsg"] !=
+                                                null &&
+                                            myController.jsondata1.value[index]
+                                                    ["preMsg"] !=
+                                                '')
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(2.0),
+                                            child: Container(
+                                                //width: double.infinity,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.blue,
+                                                  border: Border(
+                                                      left: BorderSide(
+                                                    color: Colors.yellow,
+                                                    width: 4.0,
+                                                  )),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    const SizedBox(width: 9.0),
+                                                    Flexible(
+                                                      child: Text(myController
+                                                              .jsondata1
+                                                              .value[index]
+                                                          ["preMsg"]!),
+                                                    ),
+                                                  ],
+                                                )),
+                                          )
+                                        else if (myController
+                                                        .jsondata1.value[index]
+                                                    ["prevMsgType"] ==
+                                                "Video1" &&
+                                            myController.jsondata1.value[index]
+                                                    ["preMsg"] !=
+                                                null &&
+                                            myController.jsondata1.value[index]
+                                                    ["preMsg"] !=
+                                                '')
+                                          InkWell(
+                                            onTap: () {
+                                              // Navigator.push(
+                                              //   context,
+                                              //   MaterialPageRoute(
+                                              //     builder: (context) =>
+                                              Get.to(VideoPage(
+                                                  videoUrl: myController
+                                                          .jsondata1
+                                                          .value[index]
+                                                      ["preMsg"]!));
+                                              //   ),
+                                              // );
+                                            },
+                                            child: Container(
+                                                height: 200,
+                                                child: FutureBuilder<String?>(
+                                                  future: generateThumbnail(
+                                                      myController.jsondata1
+                                                              .value[index]
+                                                          ["preMsg"]!),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState.done) {
+                                                      if (snapshot.hasData) {
+                                                        return Stack(
+                                                          children: [
+                                                            Image.file(File(
+                                                                snapshot
+                                                                    .data!)),
+                                                            CircleAvatar(
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .black54,
+                                                                radius: 30),
+                                                            Center(
+                                                              child: Icon(
+                                                                  Icons
+                                                                      .arrow_right,
+                                                                  size: 50,
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      } else {
+                                                        return Text(
+                                                            'Thumbnail not available');
+                                                      }
+                                                    } else {
+                                                      return Center(
+                                                          child:
+                                                              CircularProgressIndicator()); // Display a loading indicator while generating the thumbnail.
+                                                    }
+                                                  },
+                                                )),
+                                          )
+                                        else if (myController
+                                                        .jsondata1.value[index]
+                                                    ["prevMsgType"] ==
+                                                "Image1" &&
+                                            myController.jsondata1.value[index]
+                                                    ["preMsg"] !=
+                                                null &&
+                                            myController.jsondata1.value[index]
+                                                    ["preMsg"] !=
+                                                '')
+                                          Image.file(
+                                            File(myController.jsondata1
+                                                .value[index]["preMsg"]!),
+                                            width: 80,
+                                            height: 80,
+                                          )
+                                        else
+                                          Container(width: 0),
+                                        _buildCustomLinkPreview(
+                                            context,
+                                            myController.jsondata1.value[index]
+                                                ["message"]!),
+                                        const SizedBox(height: 2),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          //mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Container(
+                                                  width: 200,
+                                                  height: 300,
+                                                  child: Image.file(
+                                                    File(myController.jsondata1
+                                                            .value[index]
+                                                        ["message"]!),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                                Flexible(
+                                                    child: Container(
+                                                  width: 200,
+                                                  child: Text(myController
+                                                      .jsondata1
+                                                      .value[index]["text"]),
+                                                )),
+                                              ],
+                                            ),
+                                            Text(
+                                              myController.jsondata1
+                                                  .value[index]["date"]!,
+                                              style:
+                                                  const TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                  },
+                )),
           ),
           Container(
             decoration: BoxDecoration(
@@ -560,56 +792,65 @@ class _Chat_app11State extends State<Chat_app11> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (messageController == '*.jpg' ||
-                    messageController != '' && prevMsgType == 'Image1')
-                  Image.file(File(messageController.toString()),
+                if (myController.messageController == '*.jpg' ||
+                    myController.messageController != '' &&
+                        myController.prevMsgType.value == 'Image1')
+                  Image.file(File(myController.messageController.toString()),
                       height: 100, width: 100)
-                else if (messageController == '*.mp4' ||
-                    messageController != '' && prevMsgType == 'Video1')
+                else if (myController.messageController == '*.mp4' ||
+                    myController.messageController != '' &&
+                        myController.prevMsgType.value == 'Video1')
                   Flexible(
                     child: Container(
-                      height: 100,
-                      width: 171,
-                      child: FlickVideoPlayer(
-                        flickManager: FlickManager(
+                        height: 100,
+                        width: 171,
+                        child: Chewie(
+                            controller: ChewieController(
                           videoPlayerController: VideoPlayerController.network(
-                              messageController.toString()),
-                        ),
-                      ),
-                    ),
+                              myController.messageController.toString()),
+                          autoInitialize: true,
+                          looping: true,
+                        ))),
                   )
-                else if (messageController != '' || prevMsgType == 'Text1')
-                  Text(messageController)
+                else if (myController.messageController != '' ||
+                    myController.prevMsgType.value == 'Text1')
+                  Text(myController.messageController.value)
                 else
                   Text(''),
-                pickedVideo != null
-                    ? Flexible(
-                        child: Container(
-                          height: 100,
-                          width: 171,
-                          child: FlickVideoPlayer(
-                            flickManager: FlickManager(
-                              videoPlayerController:
-                                  VideoPlayerController.network(
-                                      pickedVideo!.path.toString()),
-                            ),
-                          ),
-                        ),
-                      )
-                    : (pickedFile != null)
-                        ? Image.file(File(pickedFile!.path.toString()))
+                myController.pickedVideo != null
+                    ? Obx(() => (myController.isVideoPicked.value &&
+                            myController.pickedVideo != null)
+                        ? Flexible(
+                            child: Container(
+                                height: 100,
+                                width: 171,
+                                child: Chewie(
+                                    controller: ChewieController(
+                                  videoPlayerController:
+                                      VideoPlayerController.network(myController
+                                          .pickedVideo!.path
+                                          .toString()),
+                                  autoInitialize: true,
+                                  looping:
+                                      true, // Set to true if you want the video to loop
+                                ))),
+                          )
+                        : Container())
+                    : Obx(() => (myController.isImagePicked.value &&
+                            myController.pickedFile != null)
+                        ? Image.file(File(myController.pickedFile!.path))
                         : Flexible(
                             child: SingleChildScrollView(
                               child: _buildCustomLinkPreview(
-                                  context, textController1.text),
+                                  context, myController.textController1.text),
                             ),
-                          ),
+                          )),
                 Row(
                   children: [
                     const SizedBox(width: 20),
                     Expanded(
                       child: TextField(
-                        controller: textController1,
+                        controller: myController.textController1,
                         decoration: const InputDecoration(
                             hintStyle: TextStyle(color: Colors.blueAccent),
                             border: InputBorder.none),
@@ -620,84 +861,109 @@ class _Chat_app11State extends State<Chat_app11> {
                           color: Colors.blueAccent),
                       onPressed: () {
                         setState(() {
-                          if (pickedVideo != null && prevMsgType == "Text1") {
-                            _getTextFromUser(
+                          if (myController.pickedVideo != null &&
+                              myController.prevMsgType.value == "Text1") {
+                            myController.getTextFromUser(
                                 "user1",
-                                pickedVideo!.path,
+                                myController.pickedVideo!.path,
                                 "Video",
-                                messageController,
+                                myController.messageController,
                                 "Text1",
-                                textController1.text);
-                          } else if (pickedVideo != null &&
-                              prevMsgType == "Video1") {
-                            _getTextFromUser(
+                                myController.textController1.text,
+                                "");
+                          } else if (myController.pickedVideo != null &&
+                              myController.prevMsgType.value == "Video1") {
+                            myController.getTextFromUser(
                                 "user1",
-                                pickedVideo!.path,
+                                myController.pickedVideo!.path,
                                 "Video",
-                                messageController,
+                                myController.messageController,
                                 "Video1",
-                                textController1.text);
-                          } else if (pickedVideo != null &&
-                              prevMsgType == "Image1") {
-                            _getTextFromUser(
+                                myController.textController1.text,
+                                "");
+                          } else if (myController.pickedVideo != null &&
+                              myController.prevMsgType.value == "Image1") {
+                            myController.getTextFromUser(
                                 "user1",
-                                pickedVideo!.path,
+                                myController.pickedVideo!.path,
                                 "Video",
-                                messageController,
+                                myController.messageController,
                                 "Image1",
-                                textController1.text);
-                          } else if (pickedFile != null &&
-                              prevMsgType == "Text1") {
-                            _getTextFromUser(
+                                myController.textController1.text,
+                                "");
+                          } else if (myController.pickedFile != null &&
+                              myController.prevMsgType.value == "Text1") {
+                            myController.getTextFromUser(
                                 "user1",
-                                pickedFile!.path,
+                                myController.pickedFile!.path,
                                 "image",
-                                messageController,
+                                myController.messageController,
                                 "Text1",
-                                textController1.text);
-                          } else if (pickedFile != null &&
-                              prevMsgType == "Video1") {
-                            _getTextFromUser(
+                                myController.textController1.text,
+                                "");
+                          } else if (myController.pickedFile != null &&
+                              myController.prevMsgType.value == "Video1") {
+                            myController.getTextFromUser(
                                 "user1",
-                                pickedFile!.path,
+                                myController.pickedFile!.path,
                                 "image",
-                                messageController,
+                                myController.messageController,
                                 "Video1",
-                                textController1.text);
-                          } else if (pickedFile != null &&
-                              prevMsgType == "Image1") {
-                            _getTextFromUser(
+                                myController.textController1.text,
+                                "");
+                          } else if (myController.pickedFile != null &&
+                              myController.prevMsgType.value == "Image1") {
+                            myController.getTextFromUser(
                                 "user1",
-                                pickedFile!.path,
+                                myController.pickedFile!.path,
                                 "image",
-                                messageController,
+                                myController.messageController,
                                 "Image1",
-                                textController1.text);
-                          } else if (textController1.text != null &&
-                              textController1.text != '' &&
-                              prevMsgType == "Text1") {
-                            _getTextFromUser("user1", textController1.text,
-                                "Text", messageController, "Text1", "");
-                          } else if (textController1.text != null &&
-                              textController1.text != '' &&
-                              prevMsgType == "Video1") {
-                            _getTextFromUser("user1", textController1.text,
-                                "Text", messageController, "Video1", "");
-                            print("Video1");
-                          } else if (textController1.text != null &&
-                              textController1.text != '' &&
-                              prevMsgType == "Image1") {
-                            _getTextFromUser("user1", textController1.text,
-                                "Text", messageController, "Image1", "");
-                            print("Image1");
-
+                                myController.textController1.text,
+                                "");
+                          } else if (myController.textController1.text !=
+                                  null &&
+                              myController.textController1.text != '' &&
+                              myController.prevMsgType.value == "Text1") {
+                            myController.getTextFromUser(
+                                "user1",
+                                myController.textController1.text,
+                                "Text",
+                                myController.messageController,
+                                "Text1",
+                                "",
+                                "");
+                          } else if (myController.textController1.text !=
+                                  null &&
+                              myController.textController1.text != '' &&
+                              myController.prevMsgType.value == "Video1") {
+                            myController.getTextFromUser(
+                                "user1",
+                                myController.textController1.text,
+                                "Text",
+                                myController.messageController,
+                                "Video1",
+                                "",
+                                "");
+                          } else if (myController.textController1.text !=
+                                  null &&
+                              myController.textController1.text != '') {
+                            myController.getTextFromUser(
+                                "user1",
+                                myController.textController1.text,
+                                "Text",
+                                myController.messageController,
+                                "Image1",
+                                "",
+                                myController.preTextMsgController);
                             // FocusScope.of(context).unfocus();
                           }
                           _scrollToBottom();
                         });
-                        messageController = '';
-                        pickedVideo = null;
-                        pickedFile = null;
+
+                        myController.messageController.value = '';
+                        myController.pickedVideo = null;
+                        myController.pickedFile = null;
                       },
                     ),
                     IconButton(
@@ -705,91 +971,117 @@ class _Chat_app11State extends State<Chat_app11> {
                           color: Colors.blueAccent),
                       onPressed: () {
                         setState(() {
-                          if (pickedVideo != null && prevMsgType == "Text1") {
-                            _getTextFromUser(
+                          if (myController.pickedVideo != null &&
+                              myController.prevMsgType.value == "Text1") {
+                            myController.getTextFromUser(
                                 "user2",
-                                pickedVideo!.path,
+                                myController.pickedVideo!.path,
                                 "Video",
-                                messageController,
+                                myController.messageController,
                                 "Text1",
-                                textController1.text);
-                          } else if (pickedVideo != null &&
-                              prevMsgType == "Video1") {
-                            _getTextFromUser(
+                                myController.textController1.text,
+                                "");
+                          } else if (myController.pickedVideo != null &&
+                              myController.prevMsgType.value == "Video1") {
+                            myController.getTextFromUser(
                                 "user2",
-                                pickedVideo!.path,
+                                myController.pickedVideo!.path,
                                 "Video",
-                                messageController,
+                                myController.messageController,
                                 "Video1",
-                                textController1.text);
-                          } else if (pickedVideo != null &&
-                              prevMsgType == "Image1") {
-                            _getTextFromUser(
+                                myController.textController1.text,
+                                "");
+                          } else if (myController.pickedVideo != null &&
+                              myController.prevMsgType.value == "Image1") {
+                            myController.getTextFromUser(
                                 "user2",
-                                pickedVideo!.path,
+                                myController.pickedVideo!.path,
                                 "Video",
-                                messageController,
+                                myController.messageController,
                                 "Image1",
-                                textController1.text);
-                          } else if (pickedFile != null &&
-                              prevMsgType == "Text1") {
-                            _getTextFromUser(
+                                myController.textController1.text,
+                                "");
+                          } else if (myController.pickedFile != null &&
+                              myController.prevMsgType.value == "Text1") {
+                            myController.getTextFromUser(
                                 "user2",
-                                pickedFile!.path,
+                                myController.pickedFile!.path,
                                 "image",
-                                messageController,
+                                myController.messageController,
                                 "Text1",
-                                textController1.text);
-                          } else if (pickedFile != null &&
-                              prevMsgType == "Video1") {
-                            _getTextFromUser(
+                                myController.textController1.text,
+                                "");
+                          } else if (myController.pickedFile != null &&
+                              myController.prevMsgType.value == "Video1") {
+                            myController.getTextFromUser(
                                 "user2",
-                                pickedFile!.path,
+                                myController.pickedFile!.path,
                                 "image",
-                                messageController,
+                                myController.messageController,
                                 "Video1",
-                                textController1.text);
-                          } else if (pickedFile != null &&
-                              prevMsgType == "Image1") {
-                            _getTextFromUser(
+                                myController.textController1.text,
+                                "");
+                          } else if (myController.pickedFile != null &&
+                              myController.prevMsgType.value == "Image1") {
+                            myController.getTextFromUser(
                                 "user2",
-                                pickedFile!.path,
+                                myController.pickedFile!.path,
                                 "image",
-                                messageController,
+                                myController.messageController,
                                 "Image1",
-                                textController1.text);
-                          } else if (textController1.text != null &&
-                              textController1.text != '' &&
-                              prevMsgType == "Text1") {
-                            _getTextFromUser("user2", textController1.text,
-                                "Text", messageController, "Text1", "");
-                          } else if (textController1.text != null &&
-                              textController1.text != '' &&
-                              prevMsgType == "Video1") {
-                            _getTextFromUser("user2", textController1.text,
-                                "Text", messageController, "Video1", "");
-                            print("Video1");
-                          } else if (textController1.text != null &&
-                              textController1.text != '' &&
-                              prevMsgType == "Image1") {
-                            _getTextFromUser("user2", textController1.text,
-                                "Text", messageController, "Image1", "");
-                            print("Image1");
+                                myController.textController1.text,
+                                "");
+                          } else if (myController.textController1.text !=
+                                  null &&
+                              myController.textController1.text != '' &&
+                              myController.prevMsgType.value == "Text1") {
+                            myController.getTextFromUser(
+                                "user2",
+                                myController.textController1.text,
+                                "Text",
+                                myController.messageController,
+                                "Text1",
+                                "",
+                                "");
+                          } else if (myController.textController1.text !=
+                                  null &&
+                              myController.textController1.text != '' &&
+                              myController.prevMsgType.value == "Video1") {
+                            myController.getTextFromUser(
+                                "user2",
+                                myController.textController1.text,
+                                "Text",
+                                myController.messageController,
+                                "Video1",
+                                "",
+                                "");
+                          } else if (myController.textController1.text !=
+                                  null &&
+                              myController.textController1.text != '' &&
+                              myController.prevMsgType.value == "Image1") {
+                            myController.getTextFromUser(
+                                "user2",
+                                myController.textController1.text,
+                                "Text",
+                                myController.messageController,
+                                "Image1",
+                                "",
+                                "");
 
                             // FocusScope.of(context).unfocus();
                           }
                           _scrollToBottom();
                         });
-                        messageController = '';
-                        pickedVideo = null;
-                        pickedFile = null;
+                        myController.messageController.value = '';
+                        myController.pickedVideo = null;
+                        myController.pickedFile = null;
                       },
                     ),
                     IconButton(
                         onPressed: () {
                           setState(() {
-                            _getFromCamera();
-                            textController1.clear();
+                            myController.getFromCamera();
+                            myController.textController1.clear();
                           });
                         },
                         icon:
@@ -797,8 +1089,8 @@ class _Chat_app11State extends State<Chat_app11> {
                     IconButton(
                         onPressed: () {
                           setState(() {
-                            _getFromVideo();
-                            textController1.clear();
+                            myController.getFromVideo();
+                            myController.textController1.clear();
                           });
                         },
                         icon: const Icon(Icons.video_call,
@@ -807,53 +1099,56 @@ class _Chat_app11State extends State<Chat_app11> {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
-  _getFromCamera() async {
-    // isImagePicked.value = true;
-    pickedFile = await ImagePicker().getImage(
-      source: ImageSource.camera,
-      maxWidth: 100,
-      maxHeight: 100,
-    );
-    if (pickedFile != null) {
-      // isImagePicked.value = true;
-      setState(() {});
-    }
-  }
+  // _getFromCamera() async {
+  //   //isImagePicked.value = true;
+  //   pickedFile = await ImagePicker().getImage(
+  //     source: ImageSource.camera,
+  //     maxWidth: 100,
+  //     maxHeight: 100,
+  //   );
+  //   if (pickedFile != null) {
+  //     // isImagePicked.value = true;
+  //     //  setState(() {});
+  //   }
+  // }
 
   // path1 = pickedFile!.path;
   // print(pickedFile!.path);
-  _getFromVideo() async {
-    //isVideoPicked.value = true;
-    pickedVideo = await ImagePicker().getVideo(
-      source: ImageSource.gallery,
-    );
-    if (pickedVideo != null) {
-      setState(() {
-        path2 = pickedVideo!.path;
-      });
-    }
-  }
+  // _getFromVideo() async {
+  //   //isVideoPicked.value = true;
+  //   pickedVideo = await ImagePicker().getVideo(
+  //     source: ImageSource.gallery,
+  //   );
+  //   if (pickedVideo != null) {
+  //     setState(() {
+  //       // path2 = pickedVideo!.path;
+  //       //print("Video path$path2");
+  //     });
+  //   }
+  // }
 
-  _getTextFromUser(sender, msg, type, preMsg, preType, textMsg) {
-    setState(() {
-      jsondata1.add({
-        "sender": sender,
-        "message": msg,
-        "messageType": type,
-        "date": intl.DateFormat.jm().format(DateTime.now()),
-        "preMsg": preMsg,
-        "prevMsgType": preType,
-        "text": textMsg,
-      });
-      textController1.clear();
-    });
-  }
+  // _getTextFromUser(sender, msg, type, preMsg, preType, textMsg, preTextMsg) {
+  //   //setState(() {
+  //   Map<String, String> mydata = {
+  //     "sender": sender,
+  //     "message": msg,
+  //     "messageType": type,
+  //     "date": "${intl.DateFormat.jm().format(DateTime.now())}",
+  //     "preMsg": preMsg,
+  //     "prevMsgType": preType,
+  //     "text": textMsg,
+  //     "preText": preTextMsg,
+  //   };
+  //   myController.jsondata1.add(mydata);
+  //   textController1.clear();
+  //   // });
+  // }
 
   void _scrollToBottom() {
     _scrollController.animateTo(_scrollController.position.maxScrollExtent,
@@ -935,5 +1230,15 @@ class _Chat_app11State extends State<Chat_app11> {
         );
       },
     );
+  }
+
+  Future<String?> generateThumbnail(String videoPath) async {
+    final thumbnailPath = await VideoThumbnail.thumbnailFile(
+      video: videoPath,
+      imageFormat: ImageFormat.PNG,
+      quality: 100,
+    );
+
+    return thumbnailPath;
   }
 }

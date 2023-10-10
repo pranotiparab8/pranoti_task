@@ -169,6 +169,7 @@ class _Chat_app8State extends State<Chat_app8> {
   String messageController = "";
   String prevMsgType = "Text1";
   DateTime now = DateTime.now();
+  String preTextMsgController = "";
 
   @override
   void initState() {
@@ -196,6 +197,7 @@ class _Chat_app8State extends State<Chat_app8> {
 
   @override
   Widget build(BuildContext context) {
+    print("preTextMsgController$preTextMsgController");
     return Scaffold(
       appBar: AppBar(
         title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -217,6 +219,8 @@ class _Chat_app8State extends State<Chat_app8> {
                   controller: _scrollController,
                   itemCount: jsondata1.value.length,
                   itemBuilder: (context, index) {
+                    print(
+                        "preTextMsgController${jsondata1.value[index]["preText"]}");
                     return jsondata1.value[index]["messageType"] == "Text"
                         ? InkWell(
                             onTap: () {
@@ -264,7 +268,6 @@ class _Chat_app8State extends State<Chat_app8> {
                                           jsondata1.value[index]["preMsg"] !=
                                               '')
                                         Container(
-                                          // width: double.infinity,
                                           decoration: BoxDecoration(
                                             color: Colors.blue,
                                             border: Border(
@@ -349,11 +352,47 @@ class _Chat_app8State extends State<Chat_app8> {
                                               null &&
                                           jsondata1.value[index]["preMsg"] !=
                                               '')
-                                        Image.file(
-                                          File(jsondata1.value[index]
-                                              ["preMsg"]!),
-                                          width: 80,
-                                          height: 80,
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.blue,
+                                            border: Border(
+                                                left: BorderSide(
+                                              color: Colors.yellow,
+                                              width: 4.0,
+                                            )),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text("You"),
+                                                    Row(
+                                                      children: [
+                                                        const Icon(Icons.photo),
+                                                        if (jsondata1.value[
+                                                                        index][
+                                                                    "preText"] !=
+                                                                null &&
+                                                            jsondata1.value[
+                                                                        index][
+                                                                    "preText"] !=
+                                                                '')
+                                                          Text(jsondata1
+                                                                  .value[index]
+                                                              ["preText"]),
+                                                      ],
+                                                    )
+                                                  ]),
+                                              Image.file(
+                                                File(jsondata1.value[index]
+                                                    ["preMsg"]!),
+                                                width: 50,
+                                                height: 50,
+                                              ),
+                                            ],
+                                          ),
                                         )
                                       else
                                         Container(width: 0),
@@ -404,6 +443,8 @@ class _Chat_app8State extends State<Chat_app8> {
                                     messageController =
                                         jsondata1.value[index]["message"]!;
                                     prevMsgType = "Video1";
+                                    preTextMsgController =
+                                        jsondata1.value[index]["text"]!;
                                   });
                                 },
                                 child: Align(
@@ -649,6 +690,10 @@ class _Chat_app8State extends State<Chat_app8> {
                                     messageController =
                                         jsondata1.value[index]["message"]!;
                                     prevMsgType = "Image1";
+                                    preTextMsgController =
+                                        jsondata1.value[index]["text"]!;
+
+                                    print(preTextMsgController);
                                   });
                                 },
                                 child: Align(
@@ -895,9 +940,9 @@ class _Chat_app8State extends State<Chat_app8> {
                             ))),
                       )
                     : Obx(
-                        () => myController.isImagePicked.value
-                            ? Image.file(
-                                File(myController.pickedFile!.path.toString()))
+                        () => (myController.isImagePicked.value &&
+                                myController.pickedFile != null)
+                            ? Image.file(File(myController.pickedFile!.path))
                             : Flexible(
                                 child: SingleChildScrollView(
                                   child: _buildCustomLinkPreview(
@@ -920,6 +965,8 @@ class _Chat_app8State extends State<Chat_app8> {
                       icon: const Icon(Icons.looks_one_outlined,
                           color: Colors.blueAccent),
                       onPressed: () {
+                        print(
+                            "Button1preTextMsgController$preTextMsgController");
                         setState(() {
                           if (pickedVideo != null && prevMsgType == "Text1") {
                             _getTextFromUser(
@@ -928,7 +975,8 @@ class _Chat_app8State extends State<Chat_app8> {
                                 "Video",
                                 messageController,
                                 "Text1",
-                                textController1.text);
+                                textController1.text,
+                                "");
                           } else if (pickedVideo != null &&
                               prevMsgType == "Video1") {
                             _getTextFromUser(
@@ -937,7 +985,8 @@ class _Chat_app8State extends State<Chat_app8> {
                                 "Video",
                                 messageController,
                                 "Video1",
-                                textController1.text);
+                                textController1.text,
+                                "");
                           } else if (pickedVideo != null &&
                               prevMsgType == "Image1") {
                             _getTextFromUser(
@@ -946,7 +995,8 @@ class _Chat_app8State extends State<Chat_app8> {
                                 "Video",
                                 messageController,
                                 "Image1",
-                                textController1.text);
+                                textController1.text,
+                                "");
                           } else if (myController.pickedFile != null &&
                               prevMsgType == "Text1") {
                             _getTextFromUser(
@@ -955,7 +1005,8 @@ class _Chat_app8State extends State<Chat_app8> {
                                 "image",
                                 messageController,
                                 "Text1",
-                                textController1.text);
+                                textController1.text,
+                                "");
                           } else if (myController.pickedFile != null &&
                               prevMsgType == "Video1") {
                             _getTextFromUser(
@@ -964,7 +1015,8 @@ class _Chat_app8State extends State<Chat_app8> {
                                 "image",
                                 messageController,
                                 "Video1",
-                                textController1.text);
+                                textController1.text,
+                                "");
                           } else if (myController.pickedFile != null &&
                               prevMsgType == "Image1") {
                             _getTextFromUser(
@@ -973,32 +1025,36 @@ class _Chat_app8State extends State<Chat_app8> {
                                 "image",
                                 messageController,
                                 "Image1",
-                                textController1.text);
+                                textController1.text,
+                                "");
                           } else if (textController1.text != null &&
                               textController1.text != '' &&
                               prevMsgType == "Text1") {
                             _getTextFromUser("user1", textController1.text,
-                                "Text", messageController, "Text1", "");
+                                "Text", messageController, "Text1", "", "");
                           } else if (textController1.text != null &&
                               textController1.text != '' &&
                               prevMsgType == "Video1") {
                             _getTextFromUser("user1", textController1.text,
-                                "Text", messageController, "Video1", "");
-                            print("Video1");
+                                "Text", messageController, "Video1", "", "");
                           } else if (textController1.text != null &&
-                              textController1.text != '' &&
-                              prevMsgType == "Image1") {
-                            _getTextFromUser("user1", textController1.text,
-                                "Text", messageController, "Image1", "");
-                            print("Image1");
-
+                              textController1.text != '') {
+                            _getTextFromUser(
+                                "user1",
+                                textController1.text,
+                                "Text",
+                                messageController,
+                                "Image1",
+                                "",
+                                preTextMsgController);
                             // FocusScope.of(context).unfocus();
                           }
                           _scrollToBottom();
                         });
+                        print("preTextMsgController$preTextMsgController");
                         messageController = '';
                         pickedVideo = null;
-                        pickedFile = null;
+                        myController.pickedFile = null;
                       },
                     ),
                     IconButton(
@@ -1013,7 +1069,8 @@ class _Chat_app8State extends State<Chat_app8> {
                                 "Video",
                                 messageController,
                                 "Text1",
-                                textController1.text);
+                                textController1.text,
+                                "");
                           } else if (pickedVideo != null &&
                               prevMsgType == "Video1") {
                             _getTextFromUser(
@@ -1022,7 +1079,8 @@ class _Chat_app8State extends State<Chat_app8> {
                                 "Video",
                                 messageController,
                                 "Video1",
-                                textController1.text);
+                                textController1.text,
+                                "");
                           } else if (pickedVideo != null &&
                               prevMsgType == "Image1") {
                             _getTextFromUser(
@@ -1031,51 +1089,53 @@ class _Chat_app8State extends State<Chat_app8> {
                                 "Video",
                                 messageController,
                                 "Image1",
-                                textController1.text);
-                          } else if (pickedFile != null &&
+                                textController1.text,
+                                "");
+                          } else if (myController.pickedFile != null &&
                               prevMsgType == "Text1") {
                             _getTextFromUser(
                                 "user2",
-                                pickedFile!.path,
+                                myController.pickedFile!.path,
                                 "image",
                                 messageController,
                                 "Text1",
-                                textController1.text);
-                          } else if (pickedFile != null &&
+                                textController1.text,
+                                "");
+                          } else if (myController.pickedFile != null &&
                               prevMsgType == "Video1") {
                             _getTextFromUser(
                                 "user2",
-                                pickedFile!.path,
+                                myController.pickedFile!.path,
                                 "image",
                                 messageController,
                                 "Video1",
-                                textController1.text);
-                          } else if (pickedFile != null &&
+                                textController1.text,
+                                "");
+                          } else if (myController.pickedFile != null &&
                               prevMsgType == "Image1") {
                             _getTextFromUser(
                                 "user2",
-                                pickedFile!.path,
+                                myController.pickedFile!.path,
                                 "image",
                                 messageController,
                                 "Image1",
-                                textController1.text);
+                                textController1.text,
+                                "");
                           } else if (textController1.text != null &&
                               textController1.text != '' &&
                               prevMsgType == "Text1") {
                             _getTextFromUser("user2", textController1.text,
-                                "Text", messageController, "Text1", "");
+                                "Text", messageController, "Text1", "", "");
                           } else if (textController1.text != null &&
                               textController1.text != '' &&
                               prevMsgType == "Video1") {
                             _getTextFromUser("user2", textController1.text,
-                                "Text", messageController, "Video1", "");
-                            print("Video1");
+                                "Text", messageController, "Video1", "", "");
                           } else if (textController1.text != null &&
                               textController1.text != '' &&
                               prevMsgType == "Image1") {
                             _getTextFromUser("user2", textController1.text,
-                                "Text", messageController, "Image1", "");
-                            print("Image1");
+                                "Text", messageController, "Image1", "", "");
 
                             // FocusScope.of(context).unfocus();
                           }
@@ -1083,7 +1143,7 @@ class _Chat_app8State extends State<Chat_app8> {
                         });
                         messageController = '';
                         pickedVideo = null;
-                        pickedFile = null;
+                        myController.pickedFile = null;
                       },
                     ),
                     IconButton(
@@ -1137,24 +1197,26 @@ class _Chat_app8State extends State<Chat_app8> {
     if (pickedVideo != null) {
       setState(() {
         path2 = pickedVideo!.path;
-        print("Video path$path2");
+        //print("Video path$path2");
       });
     }
   }
 
-  _getTextFromUser(sender, msg, type, preMsg, preType, textMsg) {
-    setState(() {
-      jsondata1.value.add({
-        "sender": sender,
-        "message": msg,
-        "messageType": type,
-        "date": intl.DateFormat.jm().format(DateTime.now()),
-        "preMsg": preMsg,
-        "prevMsgType": preType,
-        "text": textMsg,
-      });
-      textController1.clear();
-    });
+  _getTextFromUser(sender, msg, type, preMsg, preType, textMsg, preTextMsg) {
+    //setState(() {
+    Map<String, String> mydata = {
+      "sender": sender,
+      "message": msg,
+      "messageType": type,
+      "date": "${intl.DateFormat.jm().format(DateTime.now())}",
+      "preMsg": preMsg,
+      "prevMsgType": preType,
+      "text": textMsg,
+      "preText": preTextMsg,
+    };
+    jsondata1.add(mydata);
+    textController1.clear();
+    // });
   }
 
   void _scrollToBottom() {
