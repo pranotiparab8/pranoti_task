@@ -11,7 +11,7 @@ import 'package:pranoti_task/Pages/ChatApp/thumbVideo.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
-import 'controller.dart';
+import 'GetxApp/controller.dart';
 
 class Chat_app8 extends StatefulWidget {
   const Chat_app8({Key? key}) : super(key: key);

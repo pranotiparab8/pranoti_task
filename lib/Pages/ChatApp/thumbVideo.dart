@@ -60,18 +60,17 @@ class _VideoPageState extends State<VideoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Video Page'),
-      ),
-      body: Container(
-        child: FlickVideoPlayer(
-          flickManager: FlickManager(
-            videoPlayerController:
-                VideoPlayerController.network(widget.videoUrl),
-          ),
+        appBar: AppBar(
+          title: Text('Video Page'),
         ),
-      ),
-    );
+        body: Container(
+          child: FlickVideoPlayer(
+            flickManager: FlickManager(
+              videoPlayerController:
+                  VideoPlayerController.network(widget.videoUrl),
+            ),
+          ),
+        ));
   }
 
   @override

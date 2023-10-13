@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class MyController extends GetxController {
+  DateTime now = DateTime.now();
+  final ScrollController scrollController = ScrollController();
   final RxList<Map<String, dynamic>> jsondata1 = [
     {
       "sender": "user1",
@@ -189,5 +192,20 @@ class MyController extends GetxController {
     jsondata1.add(mydata);
     textController1.clear();
     // });
+  }
+
+  Future<String?> generateThumbnail(String videoPath) async {
+    final thumbnailPath = await VideoThumbnail.thumbnailFile(
+      video: videoPath,
+      imageFormat: ImageFormat.PNG,
+      quality: 100,
+    );
+
+    return thumbnailPath;
+  }
+
+  void scrollToBottom() {
+    scrollController.animateTo(scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 300), curve: Curves.linear);
   }
 }
