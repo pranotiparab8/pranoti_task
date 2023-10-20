@@ -28,13 +28,6 @@ class _Chat_app8State extends State<Chat_app8> {
   String? path1;
   String? path2;
 
-  var jsondata = [
-    {"user1": "Hello "},
-    {"user2": "how r u?"},
-    {"user1": "Hi"},
-    {"user2": "m fine."},
-    {"user2": "Ok"}
-  ];
   final RxList<Map<String, dynamic>> jsondata1 = [
     {
       "sender": "user1",

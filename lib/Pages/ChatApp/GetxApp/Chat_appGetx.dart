@@ -67,146 +67,59 @@ class _Chat_appGetxState extends State<Chat_appGetx> {
                   controller: myController.scrollController,
                   itemCount: myController.jsondata1.value.length,
                   itemBuilder: (context, index) {
-                    if (myController.jsondata1[index]["messageType"] ==
-                        "Text") {
-                      return InkWell(
-                        onTap: () {
-                          myController.messageController.value =
-                              myController.jsondata1.value[index]["message"]!;
-                          myController.prevMsgType.value = "Text1";
-                        },
-                        child: Align(
-                          alignment: myController.jsondata1.value[index]
+                    print(
+                        "myController.prevMsgType.value${myController.prevMsgType.value}");
+                    // print(
+                    //     "database${myController.jsondata1.value[index]["preMsgType"]}");
+                    print(
+                        "myController.jsondata1[index][prevMsgType]${myController.jsondata1[index]["prevMsgType"]}");
+                    print(
+                        "myController.jsondata1[index][text]${myController.jsondata1[index]["text"]}");
+                    return InkWell(
+                      onTap: () {
+                        myController.messageController.value =
+                            myController.jsondata1.value[index]["message"]!;
+                        myController.prevMsgType.value =
+                            myController.jsondata1[index]["messageType"];
+                        myController.preTextMsgController.value =
+                            myController.jsondata1[index]["text"];
+                      },
+                      child: Align(
+                        alignment: myController.jsondata1.value[index]
+                                    ["sender"] ==
+                                "user1"
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: Container(
+                          padding: const EdgeInsets.all(4).copyWith(bottom: 8),
+                          margin: myController.jsondata1.value[index]
                                       ["sender"] ==
                                   "user1"
-                              ? Alignment.centerRight
-                              : Alignment.centerLeft,
-                          child: Container(
-                            padding:
-                                const EdgeInsets.all(4).copyWith(bottom: 8),
-                            margin: myController.jsondata1.value[index]
+                              ? EdgeInsets.only(left: 100, right: 8, top: 8)
+                              : EdgeInsets.only(right: 100, left: 8, top: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: myController.jsondata1.value[index]
                                         ["sender"] ==
                                     "user1"
-                                ? EdgeInsets.only(left: 100, right: 8, top: 8)
-                                : EdgeInsets.only(right: 100, left: 8, top: 8),
-                            decoration: BoxDecoration(
-                              borderRadius: myController.jsondata1.value[index]
-                                          ["sender"] ==
-                                      "user1"
-                                  ? BorderRadius.circular(8)
-                                      .copyWith(bottomRight: Radius.circular(0))
-                                  : BorderRadius.circular(8)
-                                      .copyWith(bottomLeft: Radius.circular(0)),
-                              color: Colors.lightBlueAccent,
-                            ),
-                            child: IntrinsicWidth(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  preMsgView(index),
-                                  buildText(index),
-                                ],
-                              ),
+                                ? BorderRadius.circular(8)
+                                    .copyWith(bottomRight: Radius.circular(0))
+                                : BorderRadius.circular(8)
+                                    .copyWith(bottomLeft: Radius.circular(0)),
+                            color: Colors.lightBlueAccent,
+                          ),
+                          child: IntrinsicWidth(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                preMsgView(index),
+                                msgView(index),
+                              ],
                             ),
                           ),
                         ),
-                      );
-                    } else if (myController.jsondata1.value[index]
-                            ["messageType"] ==
-                        "Video") {
-                      return InkWell(
-                        onTap: () {
-                          myController.messageController.value =
-                              myController.jsondata1.value[index]["message"]!;
-                          myController.prevMsgType.value = "Video1";
-                          myController.preTextMsgController.value =
-                              myController.jsondata1.value[index]["text"]!;
-                        },
-                        child: Align(
-                          alignment: myController.jsondata1.value[index]
-                                      ["sender"] ==
-                                  "user1"
-                              ? Alignment.centerRight
-                              : Alignment.centerLeft,
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            margin: myController.jsondata1.value[index]
-                                        ["sender"] ==
-                                    "user1"
-                                ? EdgeInsets.only(left: 100, right: 8, top: 8)
-                                : EdgeInsets.only(right: 100, left: 8, top: 8),
-                            decoration: BoxDecoration(
-                              borderRadius: myController.jsondata1.value[index]
-                                          ["sender"] ==
-                                      "user1"
-                                  ? BorderRadius.circular(8).copyWith(
-                                      bottomRight: const Radius.circular(0))
-                                  : BorderRadius.circular(8).copyWith(
-                                      bottomLeft: const Radius.circular(0)),
-                              color: Colors.lightBlueAccent,
-                            ),
-                            child: IntrinsicWidth(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  preMsgView(index),
-                                  buildVideo(index),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    } else {
-                      return InkWell(
-                        onTap: () {
-                          myController.messageController.value =
-                              myController.jsondata1.value[index]["message"]!;
-                          myController.prevMsgType.value = "Image1";
-                          myController.preTextMsgController.value =
-                              myController.jsondata1.value[index]["text"]!;
-                        },
-                        child: Align(
-                          alignment: myController.jsondata1.value[index]
-                                      ["sender"] ==
-                                  "user1"
-                              ? Alignment.centerRight
-                              : Alignment.centerLeft,
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            margin: myController.jsondata1.value[index]
-                                        ["sender"] ==
-                                    "user1"
-                                ? const EdgeInsets.only(
-                                    left: 100, right: 8, top: 8)
-                                : const EdgeInsets.only(
-                                    right: 100, left: 8, top: 8),
-                            decoration: BoxDecoration(
-                              borderRadius: myController.jsondata1.value[index]
-                                          ["sender"] ==
-                                      "user1"
-                                  ? BorderRadius.circular(8).copyWith(
-                                      bottomRight: const Radius.circular(0))
-                                  : BorderRadius.circular(8).copyWith(
-                                      bottomLeft: const Radius.circular(0)),
-                              color: Colors.lightBlueAccent,
-                            ),
-                            child: IntrinsicWidth(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  preMsgView(index),
-                                  buildImage(index)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }
+                      ),
+                    );
                   },
                 )),
           ),
@@ -218,85 +131,66 @@ class _Chat_appGetxState extends State<Chat_appGetx> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Obx(() => (myController.messageController.value == '*.jpg' ||
-                        myController.messageController.value != '' &&
-                            myController.prevMsgType.value == 'Image1')
-                    ? Image.file(File(myController.messageController.value),
-                        height: 100, width: 100)
-                    : Container()),
-
-                Obx(() => (myController.messageController.value == '*.mp4' ||
-                        myController.messageController.value != '' &&
-                            myController.prevMsgType.value == 'Video1')
-                    ? Flexible(
-                        child: Container(
-                            height: 100,
-                            width: MediaQuery.of(context).size.width / 2, //171,
-                            child: Chewie(
-                                controller: ChewieController(
-                              videoPlayerController:
-                                  VideoPlayerController.network(myController
-                                      .messageController.value
-                                      .toString()),
-                              autoInitialize: false,
-                              looping:
-                                  true, // Set to true if you want the video to loop
-                            ))),
-                      )
-                    : Container()),
-                if (myController.prevMsgType.value == 'Text1' &&
-                    myController.messageController.value != '*.jpg' &&
-                    myController.messageController.value != '*.mp4')
-                  Obx(() => (myController.messageController.value != '' ||
-                          myController.prevMsgType.value == 'Text1')
-                      ? Text(myController.messageController.value.toString())
-                      : Container()),
-
-                //pickedVideo != null
-
-                //myController.pickedVideo.toString() != null
-                //myController.pickedVideo.isBlank != false
-                // ? Flexible(
-                //     child: Container(
-                //         height: 100,
-                //         width: 171,
-                //         child: Chewie(
-                //             controller: ChewieController(
-                //           videoPlayerController:
-                //               VideoPlayerController.network(
-                //                   pickedVideo!.path.toString()),
-                //           autoInitialize: true,
-                //           looping:
-                //               true, // Set to true if you want the video to loop
-                //         ))),
-                //   )
-                Obx(() => (myController.isVideoPicked.value &&
-                        myController.pickedVideo != null)
-                    ? Flexible(
-                        child: Container(
-                            height: 100,
-                            width: MediaQuery.of(context).size.width / 2, //171,
-                            child: Chewie(
-                                controller: ChewieController(
-                              videoPlayerController:
-                                  VideoPlayerController.network(myController
-                                      .pickedVideo!.path
-                                      .toString()),
-                              autoInitialize: true,
-                              looping:
-                                  true, // Set to true if you want the video to loop
-                            ))),
-                      )
-                    : Container()),
-                Obx(() => (myController.isImagePicked.value &&
-                        myController.pickedFile != null)
-                    ? Image.file(File(myController.pickedFile!.path.toString()))
-                    : Flexible(
-                        child: SingleChildScrollView(
-                          child: _buildCustomLinkPreview(
-                              context, myController.textController1.text),
-                        ),
-                      )),
+                Obx(
+                  () => SizedBox(
+                    //height: 50,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (myController.prevMsgType.value == 'image')
+                          Image.file(File(myController.messageController.value),
+                              height: 100, width: 100),
+                        if (myController.prevMsgType.value == 'Video')
+                          Flexible(
+                            child: Container(
+                                height: 100,
+                                width: MediaQuery.of(context).size.width /
+                                    2, //171,
+                                child: Chewie(
+                                    controller: ChewieController(
+                                  videoPlayerController:
+                                      VideoPlayerController.network(myController
+                                          .messageController.value
+                                          .toString()),
+                                  autoInitialize: false,
+                                  looping:
+                                      true, // Set to true if you want the video to loop
+                                ))),
+                          ),
+                        if (myController.prevMsgType.value == 'Text')
+                          Text(myController.messageController.value.toString()),
+                        (myController.isVideoPicked.value &&
+                                myController.pickedFile != null)
+                            ? Flexible(
+                                child: Container(
+                                    height: 100,
+                                    width: MediaQuery.of(context).size.width /
+                                        2, //171,
+                                    child: Chewie(
+                                        controller: ChewieController(
+                                      videoPlayerController:
+                                          VideoPlayerController.network(
+                                              myController.pickedFile!.path
+                                                  .toString()),
+                                      autoInitialize: true,
+                                      looping:
+                                          true, // Set to true if you want the video to loop
+                                    ))),
+                              )
+                            : Container(),
+                        (myController.isImagePicked.value &&
+                                myController.pickedFile != null)
+                            ? Image.file(File(myController.pickedFile!.path))
+                            : Flexible(
+                                child: SingleChildScrollView(
+                                  child: _buildCustomLinkPreview(context,
+                                      myController.textController1.text),
+                                ),
+                              ),
+                      ],
+                    ),
+                  ),
+                ),
                 Row(
                   children: [
                     const SizedBox(width: 20),
@@ -312,219 +206,163 @@ class _Chat_appGetxState extends State<Chat_appGetx> {
                       icon: const Icon(Icons.looks_one_outlined,
                           color: Colors.blueAccent),
                       onPressed: () {
-                        if (myController.pickedVideo != null &&
-                            myController.prevMsgType.value == "Text1") {
-                          myController.getTextFromUser(
-                              "user1",
-                              myController.pickedVideo!.path,
-                              "Video",
-                              myController.messageController.value,
-                              "Text1",
-                              myController.textController1.text,
-                              "");
-                        } else if (myController.pickedVideo != null &&
-                            myController.prevMsgType.value == "Video1") {
-                          myController.getTextFromUser(
-                              "user1",
-                              myController.pickedVideo!.path.toString(),
-                              "Video",
-                              myController.messageController.value,
-                              "Video1",
-                              myController.textController1.text,
-                              "");
-                        } else if (myController.pickedVideo != null &&
-                            myController.prevMsgType.value == "Image1") {
-                          myController.getTextFromUser(
-                              "user1",
-                              myController.pickedVideo!.path.toString(),
-                              "Video",
-                              myController.messageController.value,
-                              "Image1",
-                              myController.textController1.text,
-                              "");
-                        } else if (myController.pickedFile != null &&
-                            myController.prevMsgType.value == "Text1") {
-                          myController.getTextFromUser(
-                              "user1",
-                              myController.pickedFile!.path,
-                              "image",
-                              myController.messageController.value,
-                              "Text1",
-                              myController.textController1.text,
-                              "");
-                        } else if (myController.pickedFile != null &&
-                            myController.prevMsgType.value == "Video1") {
-                          myController.getTextFromUser(
-                              "user1",
-                              myController.pickedFile!.path,
-                              "image",
-                              myController.messageController.value,
-                              "Video1",
-                              myController.textController1.text,
-                              "");
-                        } else if (myController.pickedFile != null &&
-                            myController.prevMsgType.value == "Image1") {
-                          myController.getTextFromUser(
-                              "user1",
-                              myController.pickedFile!.path,
-                              "image",
-                              myController.messageController.value,
-                              "Image1",
-                              myController.textController1.text,
-                              "");
-                        } else if (myController.textController1.text != null &&
-                            myController.textController1.text != '' &&
-                            myController.prevMsgType.value == "Text1") {
-                          myController.getTextFromUser(
-                              "user1",
-                              myController.textController1.text,
-                              "Text",
-                              myController.messageController.value,
-                              "Text1",
-                              "",
-                              "");
-                        } else if (myController.textController1.text != null &&
-                            myController.textController1.text != '' &&
-                            myController.prevMsgType.value == "Video1") {
-                          myController.getTextFromUser(
-                              "user1",
-                              myController.textController1.text,
-                              "Text",
-                              myController.messageController.value,
-                              "Video1",
-                              "",
-                              "");
-                        } else if (myController.textController1.text != null &&
-                            myController.textController1.text != '') {
-                          myController.getTextFromUser(
-                              "user1",
-                              myController.textController1.text,
-                              "Text",
-                              myController.messageController.value,
-                              "Image1",
-                              "",
-                              myController.preTextMsgController.value
-                                  .toString());
-                          // FocusScope.of(context).unfocus();
-                        }
-                        myController.scrollToBottom();
+                        print(
+                            "prevMsgType2 2 ${myController.prevMsgType.value}");
 
+                        if (myController.pickedFile != null) {
+                          if (myController.pickedFile!.path.endsWith('.mp4')) {
+                            myController.MsgType.value = "Video";
+                          } else {
+                            myController.MsgType.value = "image";
+                          }
+                        } else if (myController.textController1.text != '' &&
+                            myController.textController1.text != null) {
+                          myController.MsgType.value = "Text";
+                        }
+
+                        myController.getTextFromUser(
+                            "user1",
+                            myController.MsgType.value == "Text"
+                                ? myController.textController1.text
+                                : myController.pickedFile!.path,
+                            myController.MsgType.value,
+                            myController.messageController.value,
+                            myController.prevMsgType.value,
+                            myController.MsgType.value == "Text"
+                                ? ""
+                                : myController.textController1.text,
+                            myController.MsgType.value == "Text"
+                                ? myController.preTextMsgController.value
+                                    .toString()
+                                : "");
+
+                        myController.scrollToBottom();
                         myController.messageController.value = '';
-                        myController.pickedVideo = null;
                         myController.pickedFile = null;
+                        // myController.pickedFile = null;
                         myController.isVideoPicked.value = false;
                         myController.isImagePicked.value = false;
+                        myController.prevMsgType.value = '';
                       },
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.looks_two_outlined,
-                          color: Colors.blueAccent),
-                      onPressed: () {
-                        if (myController.pickedVideo != null &&
-                            myController.prevMsgType.value == "Text1") {
-                          myController.getTextFromUser(
-                              "user2",
-                              myController.pickedVideo!.path.toString(),
-                              "Video",
-                              myController.messageController.value,
-                              "Text1",
-                              myController.textController1.text,
-                              "");
-                        } else if (myController.pickedVideo != null &&
-                            myController.prevMsgType.value == "Video1") {
-                          myController.getTextFromUser(
-                              "user2",
-                              myController.pickedVideo!.path.toString(),
-                              "Video",
-                              myController.messageController.value,
-                              "Video1",
-                              myController.textController1.text,
-                              "");
-                        } else if (myController.pickedVideo != null &&
-                            myController.prevMsgType.value == "Image1") {
-                          myController.getTextFromUser(
-                              "user2",
-                              myController.pickedVideo!.path.toString(),
-                              "Video",
-                              myController.messageController.value,
-                              "Image1",
-                              myController.textController1.text,
-                              "");
-                        } else if (myController.pickedFile != null &&
-                            myController.prevMsgType.value == "Text1") {
-                          myController.getTextFromUser(
-                              "user2",
-                              myController.pickedFile!.path,
-                              "image",
-                              myController.messageController.value,
-                              "Text1",
-                              myController.textController1.text,
-                              "");
-                        } else if (myController.pickedFile != null &&
-                            myController.prevMsgType.value == "Video1") {
-                          myController.getTextFromUser(
-                              "user2",
-                              myController.pickedFile!.path,
-                              "image",
-                              myController.messageController.value,
-                              "Video1",
-                              myController.textController1.text,
-                              "");
-                        } else if (myController.pickedFile != null &&
-                            myController.prevMsgType.value == "Image1") {
-                          myController.getTextFromUser(
-                              "user2",
-                              myController.pickedFile!.path,
-                              "image",
-                              myController.messageController.value,
-                              "Image1",
-                              myController.textController1.text,
-                              "");
-                        } else if (myController.textController1.text != null &&
-                            myController.textController1.text != '' &&
-                            myController.prevMsgType.value == "Text1") {
-                          myController.getTextFromUser(
-                              "user2",
-                              myController.textController1.text,
-                              "Text",
-                              myController.messageController.value.toString(),
-                              "Text1",
-                              "",
-                              "");
-                        } else if (myController.textController1.text != null &&
-                            myController.textController1.text != '' &&
-                            myController.prevMsgType.value == "Video1") {
-                          myController.getTextFromUser(
-                              "user2",
-                              myController.textController1.text,
-                              "Text",
-                              myController.messageController.value.toString(),
-                              "Video1",
-                              "",
-                              "");
-                        } else if (myController.textController1.text != null &&
-                            myController.textController1.text != '' &&
-                            myController.prevMsgType.value == "Image1") {
-                          myController.getTextFromUser(
-                              "user2",
-                              myController.textController1.text,
-                              "Text",
-                              myController.messageController.value.toString(),
-                              "Image1",
-                              "",
-                              "");
-
-                          // FocusScope.of(context).unfocus();
-                        }
-                        myController.scrollToBottom();
-
-                        myController.messageController.value = '';
-                        myController.pickedVideo = null;
-                        myController.pickedFile = null;
-                        myController.isVideoPicked.value = false;
-                        myController.isImagePicked.value = false;
-                      },
-                    ),
+                    // IconButton(
+                    //   icon: const Icon(Icons.looks_two_outlined,
+                    //       color: Colors.blueAccent),
+                    //   onPressed: () {
+                    //     if (myController.pickedVideo != null &&
+                    //         myController.prevMsgType.value == "Text") {
+                    //       //Text1
+                    //       myController.getTextFromUser(
+                    //           "user2",
+                    //           myController.pickedVideo!.path.toString(),
+                    //           "Video",
+                    //           myController.messageController.value,
+                    //           "Text", //Text1
+                    //           myController.textController1.text,
+                    //           "");
+                    //     } else if (myController.pickedVideo != null &&
+                    //         myController.prevMsgType.value == "Video") {
+                    //       //Video1
+                    //       myController.getTextFromUser(
+                    //           "user2",
+                    //           myController.pickedVideo!.path.toString(),
+                    //           "Video",
+                    //           myController.messageController.value,
+                    //           "Video", //Video1
+                    //           myController.textController1.text,
+                    //           "");
+                    //     } else if (myController.pickedVideo != null &&
+                    //         myController.prevMsgType.value == "Image") {
+                    //       //Image1
+                    //       myController.getTextFromUser(
+                    //           "user2",
+                    //           myController.pickedVideo!.path.toString(),
+                    //           "Video",
+                    //           myController.messageController.value,
+                    //           "Image", //Image1
+                    //           myController.textController1.text,
+                    //           "");
+                    //     } else if (myController.pickedFile != null &&
+                    //         myController.prevMsgType.value == "Text") {
+                    //       //Text1
+                    //       myController.getTextFromUser(
+                    //           "user2",
+                    //           myController.pickedFile!.path,
+                    //           "image",
+                    //           myController.messageController.value,
+                    //           "Text", //Text1
+                    //           myController.textController1.text,
+                    //           "");
+                    //     } else if (myController.pickedFile != null &&
+                    //         myController.prevMsgType.value == "Video") {
+                    //       //Video1
+                    //       myController.getTextFromUser(
+                    //           "user2",
+                    //           myController.pickedFile!.path,
+                    //           "image",
+                    //           myController.messageController.value,
+                    //           "Video", //Video1
+                    //           myController.textController1.text,
+                    //           "");
+                    //     } else if (myController.pickedFile != null &&
+                    //         myController.prevMsgType.value == "Image") {
+                    //       //Image1
+                    //       myController.getTextFromUser(
+                    //           "user2",
+                    //           myController.pickedFile!.path,
+                    //           "image",
+                    //           myController.messageController.value,
+                    //           "Image", //Image1
+                    //           myController.textController1.text,
+                    //           "");
+                    //     } else if (myController.textController1.text != null &&
+                    //         myController.textController1.text != '' &&
+                    //         myController.prevMsgType.value == "Text") {
+                    //       //Text1
+                    //       myController.getTextFromUser(
+                    //           "user2",
+                    //           myController.textController1.text,
+                    //           "Text",
+                    //           myController.messageController.value.toString(),
+                    //           "Text", //Text1
+                    //           "",
+                    //           "");
+                    //     } else if (myController.textController1.text != null &&
+                    //         myController.textController1.text != '' &&
+                    //         myController.prevMsgType.value == "Video") {
+                    //       //Video1
+                    //       myController.getTextFromUser(
+                    //           "user2",
+                    //           myController.textController1.text,
+                    //           "Text",
+                    //           myController.messageController.value.toString(),
+                    //           "Video", //Video1
+                    //           "",
+                    //           "");
+                    //     } else if (myController.textController1.text != null &&
+                    //         myController.textController1.text != '' &&
+                    //         myController.prevMsgType.value == "Image") {
+                    //       //Image1
+                    //       myController.getTextFromUser(
+                    //           "user2",
+                    //           myController.textController1.text,
+                    //           "Text",
+                    //           myController.messageController.value.toString(),
+                    //           "Image", //Image1
+                    //           "",
+                    //           "");
+                    //
+                    //       // FocusScope.of(context).unfocus();
+                    //     }
+                    //     myController.scrollToBottom();
+                    //
+                    //     myController.messageController.value = '';
+                    //     myController.pickedVideo = null;
+                    //     myController.pickedFile = null;
+                    //     myController.isVideoPicked.value = false;
+                    //     myController.isImagePicked.value = false;
+                    //   },
+                    // ),
                     IconButton(
                         onPressed: () {
                           myController.getFromCamera();
@@ -661,7 +499,7 @@ class _Chat_appGetxState extends State<Chat_appGetx> {
       children: [
         Flexible(child: Text(myController.jsondata1.value[index]["message"]!)),
         Transform.translate(
-          offset: Offset(0, 6.0),
+          offset: const Offset(0, 6.0),
           child: Text(
             myController.jsondata1.value[index]["date"]!,
             style: const TextStyle(fontSize: 12),
@@ -673,6 +511,8 @@ class _Chat_appGetxState extends State<Chat_appGetx> {
   }
 
   Container PrevText(int index) {
+    print(
+        "myController.jsondata1.value[index][preMsg]${myController.jsondata1.value[index]["preMsg"]!}");
     return Container(
       decoration: BoxDecoration(
         color: Colors.blue,
@@ -723,7 +563,44 @@ class _Chat_appGetxState extends State<Chat_appGetx> {
     );
   }
 
+  Widget prevImage(int index) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.blue,
+        border: Border(
+            left: BorderSide(
+          color: Colors.yellow,
+          width: 4.0,
+        )),
+      ),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("You"),
+              Row(
+                children: [
+                  const Icon(Icons.photo),
+                  if (myController.jsondata1.value[index]["preText"] != null &&
+                      myController.jsondata1.value[index]["preText"] != '')
+                    Text(myController.jsondata1.value[index]["preText"]),
+                ],
+              )
+            ],
+          ),
+          Image.file(
+            File(myController.jsondata1.value[index]["preMsg"]!),
+            width: 50,
+            height: 50,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildCustomLinkPreview(BuildContext context, String url) {
+    print("Okay ");
     return FlutterLinkPreview(
       key: ValueKey("${url}211"),
       url: url,
@@ -805,19 +682,15 @@ class _Chat_appGetxState extends State<Chat_appGetx> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (myController.jsondata1.value[index]["prevMsgType"] == "Text1" &&
-            myController.jsondata1.value[index]["preMsg"] != null &&
-            myController.jsondata1.value[index]["preMsg"] != '')
+        if (myController.jsondata1.value[index]["prevMsgType"] == "Text"
+            // &&
+            // myController.jsondata1.value[index]["preMsg"] != null &&
+            // myController.jsondata1.value[index]["preMsg"] != ''
+            )
           PrevText(index)
-        else if (myController.jsondata1.value[index]["prevMsgType"] ==
-                "Video1" &&
-            myController.jsondata1.value[index]["preMsg"] != null &&
-            myController.jsondata1.value[index]["preMsg"] != '')
+        else if (myController.jsondata1.value[index]["prevMsgType"] == "Video")
           PrevVideo(index)
-        else if (myController.jsondata1.value[index]["prevMsgType"] ==
-                "Image1" &&
-            myController.jsondata1.value[index]["preMsg"] != null &&
-            myController.jsondata1.value[index]["preMsg"] != '')
+        else if (myController.jsondata1.value[index]["prevMsgType"] == "image")
           prevImage(index)
         else
           Container(width: 0),
@@ -828,36 +701,21 @@ class _Chat_appGetxState extends State<Chat_appGetx> {
     );
   }
 
-  Widget prevImage(int index) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.blue,
-        border: Border(
-            left: BorderSide(
-          color: Colors.yellow,
-          width: 4.0,
-        )),
-      ),
-      child: Row(
-        children: [
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text("You"),
-            Row(
-              children: [
-                const Icon(Icons.photo),
-                if (myController.jsondata1.value[index]["preText"] != null &&
-                    myController.jsondata1.value[index]["preText"] != '')
-                  Text(myController.jsondata1.value[index]["preText"]),
-              ],
-            )
-          ]),
-          Image.file(
-            File(myController.jsondata1.value[index]["preMsg"]!),
-            width: 50,
-            height: 50,
-          ),
-        ],
-      ),
+  Widget msgView(int index) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (myController.jsondata1[index]["messageType"] == "Text")
+          buildText(index)
+        else if (myController.jsondata1[index]["messageType"] == "Video")
+          buildVideo(index)
+        else if (myController.jsondata1[index]["messageType"] == "image")
+          buildImage(index)
+        else
+          Container(),
+        const SizedBox(height: 2),
+      ],
     );
   }
 }

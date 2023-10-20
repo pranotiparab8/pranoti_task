@@ -8,14 +8,14 @@ import 'package:intl/intl.dart' as intl;
 import 'package:lecle_flutter_link_preview/lecle_flutter_link_preview.dart';
 import 'package:video_player/video_player.dart';
 
-class Chat_app10 extends StatefulWidget {
-  const Chat_app10({Key? key}) : super(key: key);
+class Chat_app19 extends StatefulWidget {
+  const Chat_app19({Key? key}) : super(key: key);
 
   @override
-  State<Chat_app10> createState() => _Chat_app10State();
+  State<Chat_app19> createState() => _Chat_app19State();
 }
 
-class _Chat_app10State extends State<Chat_app10> {
+class _Chat_app19State extends State<Chat_app19> {
   final ScrollController _scrollController = ScrollController();
   PickedFile? pickedFile;
   PickedFile? pickedVideo;
@@ -452,45 +452,6 @@ class _Chat_app10State extends State<Chat_app10> {
                                         ),
                                       ],
                                     ),
-                                    // Row(
-                                    //   crossAxisAlignment:
-                                    //       CrossAxisAlignment.end,
-                                    //   mainAxisSize: MainAxisSize.min,
-                                    //   children: [
-                                    //     Flexible(
-                                    //       child: Container(
-                                    //         // height: 150,
-                                    //         // width: 100,
-                                    //         // decoration: BoxDecoration(
-                                    //         //   image: DecorationImage(
-                                    //         //     fit: BoxFit.cover,
-                                    //         //     image: NetworkImage(
-                                    //         //       jsondata1[index]["message"]!,
-                                    //         //     ),
-                                    //         //   ),
-                                    //         // ),
-                                    //         // child: AspectRatio(
-                                    //         //   aspectRatio: 3 / 4,
-                                    //         child: FlickVideoPlayer(
-                                    //           flickManager: FlickManager(
-                                    //             videoPlayerController:
-                                    //                 VideoPlayerController
-                                    //                     .network(
-                                    //                         jsondata1[index]
-                                    //                             ["message"]!),
-                                    //           ),
-                                    //         ),
-                                    //         // ),
-                                    //       ),
-                                    //     ),
-                                    //     Text(
-                                    //       jsondata1[index]["date"]!,
-                                    //       style: const TextStyle(fontSize: 12),
-                                    //       textAlign: TextAlign.end,
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                    //Text(jsondata1[index]["text"]),
                                   ],
                                 ),
                               ),

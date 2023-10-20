@@ -31,6 +31,12 @@ dependencies:
   video_compress: ^3.1.2
   video_thumbnail:
   chewie:
+  provider:
+  sqflite:
+  path_provider:
+  flutter_local_notifications:
+  timezone:
+  omni_datetime_picker:
 
 dev_dependencies:
   flutter_test:
