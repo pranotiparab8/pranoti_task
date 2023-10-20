@@ -48,7 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
         controller: ChewieController(
       videoPlayerController: VideoPlayerController.network(text),
       autoInitialize: true,
-      looping: true, // Set to true if you want the video to loop
+      looping: true,
     ));
   }
 

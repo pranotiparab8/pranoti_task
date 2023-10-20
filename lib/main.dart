@@ -9,9 +9,28 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
+  // Widget build(BuildContext context) {
+  //   return MultiProvider(
+  //     providers: [
+  //       // ChangeNotifierProvider(create: (_) => CountProvider()),
+  //       ChangeNotifierProvider(create: (_) => ChatScreenProvider()),
+  //     ],
+  //     child: MaterialApp(
+  //       debugShowCheckedModeBanner: false,
+  //       home: Chat_app10(),
+  //     ),
+  //   );
+  //   // return ChangeNotifierProvider(
+  //   //   create: (_) => CountProvider(),
+  //   //   child: MaterialApp(
+  //   //     debugShowCheckedModeBanner: false,
+  //   //     home: ExampleOneScreen(),
+  //   //   ),
+  //   // );
+  // }
+
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
       home: Chat_appGetx(),
     );
   }
