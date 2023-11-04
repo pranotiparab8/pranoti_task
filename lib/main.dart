@@ -3,7 +3,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'Pages/ReminderApp/local_notifications.dart';
-import 'Pages/ReminderApp/remainder_screen.dart';
+import 'Pages/ReminderApp/remainders.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       // debugShowCheckedModeBanner: false,
       // theme: ThemeData(primarySwatch: Colors.blue),
       // home: scheHomePage(title: 'Flutter Local Notifications'),
-      home: RemainderScreen(),
+      home: Remainders(),
     );
   }
 }

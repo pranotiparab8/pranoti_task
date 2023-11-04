@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'DataModel.dart';
+import 'Remainder.dart';
 
 class RemainderController extends GetxController {
   TextEditingController textEditingController = TextEditingController();
@@ -25,6 +25,6 @@ class RemainderController extends GetxController {
     'Half-yearly',
     'Yearly',
   ].obs;
-  RxList<RemainderModel> remainderList = <RemainderModel>[].obs;
+  RxList<Remainder> remainderList = <Remainder>[].obs;
   DateTime? pickedDate;
 }
