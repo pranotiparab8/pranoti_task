@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pranoti_task/Pages/ReminderApp/local_notifications.dart';
+import 'package:pranoti_task/Pages/ReminderApp/Plocal_notifications.dart';
 
 DateTime scheduleTime = DateTime(2023, 11, 3, 11, 14);
 

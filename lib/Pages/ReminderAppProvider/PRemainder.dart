@@ -4,13 +4,13 @@ const uuid = Uuid();
 
 //enum Frequency { daily, weekly, monthly, quaterly, halfyearly, yearly }
 
-class Remainder {
+class PRemainder {
   final id;
   final taskName;
   final date;
   final frequency;
 
-  Remainder({
+  PRemainder({
     this.taskName,
     this.date,
     this.frequency,

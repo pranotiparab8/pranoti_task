@@ -19,7 +19,7 @@ class DatabaseHelper {
     final pathToDatabase = path.join(databasePath, 'remainder_database.db');
 
     return await openDatabase(pathToDatabase, version: 1,
-        onCreate: (db, version) async {
+        onCreate: (Database db, int version) async {
       // Create your tables here
       await db.execute('''
         CREATE TABLE tasks (

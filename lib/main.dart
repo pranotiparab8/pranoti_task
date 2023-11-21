@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
-import 'Pages/ReminderApp/local_notifications.dart';
-import 'Pages/ReminderApp/remainders.dart';
+import 'Pages/ReminderAppGetx/local_notifications.dart';
+import 'Pages/ReminderAppGetx/remainders.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
   // }
 
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return const GetMaterialApp(
       // title: 'Flutter Notifications',
       // debugShowCheckedModeBanner: false,
       // theme: ThemeData(primarySwatch: Colors.blue),

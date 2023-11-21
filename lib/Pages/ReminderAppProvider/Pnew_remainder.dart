@@ -2,35 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
-import 'package:pranoti_task/Pages/ReminderApp/remainder_controller.dart';
 
-import 'Remainder.dart';
-import 'add_frequency.dart';
-import 'database.dart';
-import 'local_notifications.dart';
+import '../ReminderAppProvider/Premainder_controller.dart';
+import 'PRemainder.dart';
+import 'Padd_frequency.dart';
+import 'Pdatabase.dart';
+import 'Plocal_notifications.dart';
 
-class NewRemainder extends StatefulWidget {
-  const NewRemainder({Key? key, required this.onAddRemainder})
+class PNewRemainder extends StatefulWidget {
+  const PNewRemainder({Key? key, required this.onAddRemainder})
       : super(key: key);
-  final void Function(Remainder remainder) onAddRemainder;
+  final void Function(PRemainder remainder) onAddRemainder;
   @override
-  State<NewRemainder> createState() => _NewRemainderState();
+  State<PNewRemainder> createState() => _PNewRemainderState();
 }
 
-class _NewRemainderState extends State<NewRemainder> {
+class _PNewRemainderState extends State<PNewRemainder> {
+  TextEditingController textEditingController = TextEditingController();
+  DateTime? pickedDate;
+  PAddFrequency addFrequency = PAddFrequency();
+  String concatenatedString = '';
+
   void _submitRemainderData() {
-    widget.onAddRemainder(Remainder(
-        taskName: myController.textEditingController.text,
-        date: myController.pickedDate != null
-            ? DateFormat('dd-MM-yyyy').format(myController.pickedDate!)
+    widget.onAddRemainder(PRemainder(
+        taskName: textEditingController.text,
+        date: pickedDate != null
+            ? DateFormat('dd-MM-yyyy').format(pickedDate!)
             : null,
-        frequency: myController.frequency[myController.selectedValue.value]));
+        frequency: (myController.selectedValue.value == 1)
+            ? concatenatedString
+            : myController.frequency[myController.selectedValue.value])); //
     Navigator.pop(context);
   }
 
-  RemainderController myController = Get.put(RemainderController());
+  PRemainderController myController = Get.put(PRemainderController());
   @override
   Widget build(BuildContext context) {
+    concatenatedString = myController.tmpArray.join(' ');
     setState(() {});
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -38,21 +46,20 @@ class _NewRemainderState extends State<NewRemainder> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextField(
-            controller: myController.textEditingController,
+            controller: textEditingController,
             decoration: const InputDecoration(
                 border: UnderlineInputBorder(), labelText: "Task Name"),
           ),
           const SizedBox(height: 20),
           Row(
             children: [
-              myController.pickedDate != null
-                  ? Text(
-                      "${DateFormat('dd-MM-yyyy').format(myController.pickedDate!)}")
+              pickedDate != null
+                  ? Text("${DateFormat('dd-MM-yyyy').format(pickedDate!)}")
                   : Text("No date selected"),
               const SizedBox(width: 10),
               InkWell(
                 onTap: () async {
-                  myController.pickedDate = await showOmniDateTimePicker(
+                  pickedDate = await showOmniDateTimePicker(
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate:
@@ -91,14 +98,15 @@ class _NewRemainderState extends State<NewRemainder> {
           const SizedBox(height: 30),
           InkWell(
               onTap: () {
-                Get.to(() => AddFrequency());
+                Get.to(() => PAddFrequency());
               },
               child: const Text(
                 "Frequency",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
               )),
-          Obx(() =>
-              Text(myController.frequency[myController.selectedValue.value])),
+          Obx(() => (myController.selectedValue.value == 1)
+              ? Text(concatenatedString)
+              : Text(myController.frequency[myController.selectedValue.value])),
           const SizedBox(height: 30),
           Row(children: [
             const Spacer(),
@@ -110,17 +118,20 @@ class _NewRemainderState extends State<NewRemainder> {
             ElevatedButton(
                 onPressed: () async {
                   _submitRemainderData();
-                  final database = await DatabaseHelper().database;
+                  final database = await PDatabaseHelper().database;
                   await database.insert(
                     'tasks',
                     {
-                      'taskName': myController.textEditingController.text,
-                      'date': myController.pickedDate != null
-                          ? DateFormat('dd-MM-yyyy')
-                              .format(myController.pickedDate!)
+                      'taskName': textEditingController.text,
+                      'date': pickedDate != null
+                          ? DateFormat('dd-MM-yyyy').format(pickedDate!)
                           : null,
-                      'frequency': myController
-                          .frequency[myController.selectedValue.value],
+                      'frequency': (myController.selectedValue.value == 1)
+                          ? concatenatedString
+                          : myController
+                              .frequency[myController.selectedValue.value]
+                      //myController
+                      //.frequency[myController.selectedValue.value],
                     },
                   );
                   // _getTextFromUser(
@@ -130,26 +141,24 @@ class _NewRemainderState extends State<NewRemainder> {
                   //             .format(myController.pickedDate!)
                   //         : null,
                   //     myController.frequency[myController.selectedValue.value]);
-                  await DatabaseHelper().updateTask(5, {
+                  await PDatabaseHelper().updateTask(5, {
                     'taskName': "Hello5",
                     'date': '25-09-1098',
                     'frequency': 'daily',
                   });
                   //await database.delete('tasks');
-                  await DatabaseHelper().deleteTask(1);
+                  await PDatabaseHelper().deleteTask(1);
                   print(await database.query('tasks'));
                   // myController.remainderList
                   //     .assignAll(await database.query('tasks'));
 
-                  debugPrint(
-                      'Notification Scheduled for ${myController.pickedDate}');
-                  NotificationService().scheduleNotification(
-                      title: myController.textEditingController.text,
-                      body: myController.pickedDate != null
-                          ? DateFormat('dd-MM-yyyy')
-                              .format(myController.pickedDate!)
+                  debugPrint('Notification Scheduled for ${pickedDate}');
+                  PNotificationService().scheduleNotification(
+                      title: textEditingController.text,
+                      body: pickedDate != null
+                          ? DateFormat('dd-MM-yyyy').format(pickedDate!)
                           : null,
-                      scheduledNotificationDateTime: myController.pickedDate!);
+                      scheduledNotificationDateTime: pickedDate!);
                   //Navigator.of(context).pop();
                   setState(() {});
                 },
@@ -157,14 +166,13 @@ class _NewRemainderState extends State<NewRemainder> {
           ]),
           InkWell(
             onTap: () async {
-              final database = await DatabaseHelper().database;
+              final database = await PDatabaseHelper().database;
               await database.insert(
                 'tasks',
                 {
-                  'taskName': myController.textEditingController.text,
-                  'date': myController.pickedDate != null
-                      ? DateFormat('dd-MM-yyyy')
-                          .format(myController.pickedDate!)
+                  'taskName': textEditingController.text,
+                  'date': pickedDate != null
+                      ? DateFormat('dd-MM-yyyy').format(pickedDate!)
                       : null,
                   'frequency':
                       myController.frequency[myController.selectedValue.value],
@@ -177,27 +185,26 @@ class _NewRemainderState extends State<NewRemainder> {
               //             .format(myController.pickedDate!)
               //         : null,
               //     myController.frequency[myController.selectedValue.value]);
-              await DatabaseHelper().updateTask(5, {
+              await PDatabaseHelper().updateTask(5, {
                 'taskName': "Hello5",
                 'date': '25-09-1098',
                 'frequency': 'daily',
               });
               //await database.delete('tasks');
-              await DatabaseHelper().deleteTask(1);
+              await PDatabaseHelper().deleteTask(1);
               print(await database.query('tasks'));
+
               // myController.remainderList
               //     .assignAll(await database.query('tasks'));
 
               Navigator.of(context).pop();
-              debugPrint(
-                  'Notification Scheduled for ${myController.pickedDate}');
-              NotificationService().scheduleNotification(
-                  title: myController.textEditingController.text,
-                  body: myController.pickedDate != null
-                      ? DateFormat('dd-MM-yyyy')
-                          .format(myController.pickedDate!)
+              debugPrint('Notification Scheduled for ${pickedDate}');
+              PNotificationService().scheduleNotification(
+                  title: textEditingController.text,
+                  body: pickedDate != null
+                      ? DateFormat('dd-MM-yyyy').format(pickedDate!)
                       : null,
-                  scheduledNotificationDateTime: myController.pickedDate!);
+                  scheduledNotificationDateTime: pickedDate!);
               setState(() {});
             },
             child: const Text("Notify",
